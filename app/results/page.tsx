@@ -1,11 +1,12 @@
 'use client'
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { apps } from '@/lib/mock-data/apps'
 import { collections } from '@/lib/mock-data/collections'
 import TopBar from '@/components/layout/TopBar'
 import AppCard from '@/components/app/AppCard'
 
-export default function ResultsPage() {
+function Results() {
   const params = useSearchParams()
   const query = params.get('q') ?? ''
 
@@ -35,5 +36,13 @@ export default function ResultsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-gray-400">Loading results...</div>}>
+      <Results />
+    </Suspense>
   )
 }
