@@ -1,0 +1,335 @@
+<h2>AppDrop — Full Platform Overview</h2>
+<p class="subtitle">All three layers visualized as a connected system</p>
+
+<div class="section">
+
+  <!-- Layer flow diagram -->
+  <div style="display:flex;flex-direction:column;gap:0;">
+
+    <!-- ═══ LAYER A: PACKAGING ═══ -->
+    <div style="background:linear-gradient(135deg,#1a1040,#0f0a2e);border:1px solid #6366f1;border-radius:16px;padding:20px;margin-bottom:0;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="background:#6366f1;color:white;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:800;letter-spacing:1px;">LAYER A</div>
+        <div style="font-size:16px;font-weight:800;">📦 Packaging</div>
+        <div style="font-size:11px;color:#8b8bf5;margin-left:4px;">Developer submits → AI generates full app package</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;">
+        <!-- Step 1: Form -->
+        <div style="flex:1;min-width:140px;background:#0f0a2e;border:1px solid #333;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#6366f1;font-weight:700;letter-spacing:1px;margin-bottom:8px;">① GUIDED FORM</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="background:#1a1040;border-radius:6px;padding:5px 8px;font-size:10px;color:#ccc;">🔗 App link</div>
+            <div style="background:#1a1040;border-radius:6px;padding:5px 8px;font-size:10px;color:#ccc;">❓ Problem it solves</div>
+            <div style="background:#1a1040;border-radius:6px;padding:5px 8px;font-size:10px;color:#ccc;">👤 Who is it for</div>
+            <div style="background:#1a1040;border-radius:6px;padding:5px 8px;font-size:10px;color:#ccc;">⚙️ 3 core features</div>
+            <div style="background:#1a1040;border-radius:6px;padding:5px 8px;font-size:10px;color:#ccc;">🖥️ Access type</div>
+            <div style="background:#1a1040;border-radius:6px;padding:5px 8px;font-size:10px;color:#ccc;">💰 Pricing</div>
+            <div style="background:#1a1040;border-radius:6px;padding:5px 8px;font-size:10px;color:#ccc;">🏷️ Category tags</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;font-size:20px;color:#6366f1;flex-shrink:0;">→</div>
+
+        <!-- Step 2: AI Pipeline -->
+        <div style="flex:1;min-width:140px;background:#0f0a2e;border:1px solid #333;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#6366f1;font-weight:700;letter-spacing:1px;margin-bottom:8px;">② AI PIPELINE</div>
+          <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;padding:10px;text-align:center;margin-bottom:8px;">
+            <div style="font-size:11px;font-weight:700;color:white;">LLM generates</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.7);">~15 seconds</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="font-size:10px;color:#ccc;">→ Description + tagline</div>
+            <div style="font-size:10px;color:#ccc;">→ Use cases (3–5)</div>
+            <div style="font-size:10px;color:#ccc;">→ Social copy (X, LinkedIn)</div>
+            <div style="font-size:10px;color:#ccc;">→ Story card rendered</div>
+            <div style="font-size:10px;color:#ccc;">→ Embeddings created</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;font-size:20px;color:#6366f1;flex-shrink:0;">→</div>
+
+        <!-- Step 3: Output -->
+        <div style="flex:1.4;min-width:160px;background:#0f0a2e;border:1px solid #333;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#6366f1;font-weight:700;letter-spacing:1px;margin-bottom:8px;">③ APP PACKAGE OUTPUT</div>
+          <div style="display:flex;gap:6px;height:100px;">
+            <!-- Hosted page mini -->
+            <div style="flex:1;background:#1a1040;border-radius:8px;padding:8px;font-size:9px;color:#aaa;display:flex;flex-direction:column;gap:3px;">
+              <div style="font-size:10px;font-weight:700;color:white;">Hosted Page</div>
+              <div style="color:#8b8bf5;">Title + tagline</div>
+              <div>Description</div>
+              <div>Use cases</div>
+              <div>Try button</div>
+            </div>
+            <!-- Story card mini -->
+            <div style="flex:1;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;padding:8px;font-size:9px;color:rgba(255,255,255,0.8);display:flex;flex-direction:column;gap:3px;">
+              <div style="font-size:10px;font-weight:700;color:white;">Story Card</div>
+              <div>THE PROBLEM</div>
+              <div style="font-weight:700;color:white;font-size:9px;">[Problem]</div>
+              <div>THE SOLUTION</div>
+              <div style="font-weight:700;color:white;font-size:9px;">[App name]</div>
+            </div>
+            <!-- Social copy mini -->
+            <div style="flex:1;background:#1a1040;border-radius:8px;padding:8px;font-size:9px;color:#aaa;display:flex;flex-direction:column;gap:3px;">
+              <div style="font-size:10px;font-weight:700;color:white;">Social Copy</div>
+              <div style="color:#8b8bf5;">Twitter/X</div>
+              <div>LinkedIn</div>
+              <div style="margin-top:4px;color:#6366f1;">+ shareable URL</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;font-size:20px;color:#6366f1;flex-shrink:0;">→</div>
+
+        <!-- Creator profile -->
+        <div style="flex:0.8;min-width:120px;background:#0f0a2e;border:1px solid #333;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#6366f1;font-weight:700;letter-spacing:1px;margin-bottom:8px;">④ CREATOR PROFILE</div>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:10px;color:#ccc;">
+            <div>👤 Name + bio</div>
+            <div>📦 Published apps</div>
+            <div>⭐ Regulars count</div>
+            <div>📢 Drop composer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div style="display:flex;justify-content:center;align-items:center;height:32px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:2px;height:10px;background:#444;"></div>
+        <div style="font-size:10px;color:#555;background:#0a0a0a;padding:0 8px;">App enters catalog + embeddings indexed</div>
+        <div style="width:2px;height:10px;background:#444;"></div>
+      </div>
+    </div>
+
+    <!-- ═══ APP CATALOG (CENTER) ═══ -->
+    <div style="background:#0f0f0f;border:1px solid #333;border-radius:12px;padding:14px 20px;margin-bottom:0;display:flex;align-items:center;gap:16px;">
+      <div style="font-size:12px;font-weight:800;color:#fff;white-space:nowrap;">🗄️ App Catalog</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div style="background:#1a1a1a;border-radius:6px;padding:4px 10px;font-size:10px;color:#aaa;">App entities</div>
+        <div style="background:#1a1a1a;border-radius:6px;padding:4px 10px;font-size:10px;color:#aaa;">Story cards</div>
+        <div style="background:#1a1a1a;border-radius:6px;padding:4px 10px;font-size:10px;color:#aaa;">Embeddings</div>
+        <div style="background:#1a1a1a;border-radius:6px;padding:4px 10px;font-size:10px;color:#aaa;">Boost signals</div>
+        <div style="background:#1a1a1a;border-radius:6px;padding:4px 10px;font-size:10px;color:#aaa;">Tags + categories</div>
+        <div style="background:#1a1a1a;border-radius:6px;padding:4px 10px;font-size:10px;color:#aaa;">Collections</div>
+        <div style="background:#1a1a1a;border-radius:6px;padding:4px 10px;font-size:10px;color:#aaa;">Feed items</div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div style="display:flex;justify-content:center;align-items:center;height:32px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:2px;height:10px;background:#444;"></div>
+        <div style="font-size:10px;color:#555;background:#0a0a0a;padding:0 8px;">AI delivery engine queries catalog</div>
+        <div style="width:2px;height:10px;background:#444;"></div>
+      </div>
+    </div>
+
+    <!-- ═══ LAYER B: DELIVERY ═══ -->
+    <div style="background:linear-gradient(135deg,#001a10,#00100a);border:1px solid #10b981;border-radius:16px;padding:20px;margin-bottom:0;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="background:#10b981;color:white;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:800;letter-spacing:1px;">LAYER B</div>
+        <div style="font-size:16px;font-weight:800;">🚀 Delivery</div>
+        <div style="font-size:11px;color:#6ee7b7;margin-left:4px;">User describes problem → AI delivers matching apps as Story cards</div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;">
+        <!-- Entry points -->
+        <div style="flex:1;min-width:130px;background:#001a10;border:1px solid #1a3a2e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#10b981;font-weight:700;letter-spacing:1px;margin-bottom:8px;">① USER ENTRY</div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="background:#0a2e1e;border-radius:6px;padding:6px 8px;font-size:10px;color:#ccc;border-left:2px solid #10b981;">💬 Problem input</div>
+            <div style="background:#0a2e1e;border-radius:6px;padding:6px 8px;font-size:10px;color:#ccc;border-left:2px solid #555;">🏷️ Category browse</div>
+            <div style="background:#0a2e1e;border-radius:6px;padding:6px 8px;font-size:10px;color:#ccc;border-left:2px solid #555;">🔍 Search icon</div>
+            <div style="background:#0a2e1e;border-radius:6px;padding:6px 8px;font-size:10px;color:#ccc;border-left:2px solid #555;">🃏 Story ring tap</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;font-size:20px;color:#10b981;flex-shrink:0;">→</div>
+
+        <!-- AI Engine -->
+        <div style="flex:1;min-width:130px;background:#001a10;border:1px solid #1a3a2e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#10b981;font-weight:700;letter-spacing:1px;margin-bottom:8px;">② AI ENGINE</div>
+          <div style="background:linear-gradient(135deg,#10b981,#0ea5e9);border-radius:8px;padding:10px;text-align:center;margin-bottom:8px;">
+            <div style="font-size:11px;font-weight:700;color:white;">LLM + Semantic Search</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:10px;color:#ccc;">
+            <div>→ Interpret user intent</div>
+            <div>→ Search embeddings</div>
+            <div>→ Re-rank by boost + recency</div>
+            <div>→ Return top 3–5 apps</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;font-size:20px;color:#10b981;flex-shrink:0;">→</div>
+
+        <!-- Results -->
+        <div style="flex:1;min-width:130px;background:#001a10;border:1px solid #1a3a2e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#10b981;font-weight:700;letter-spacing:1px;margin-bottom:8px;">③ RESULTS PAGE</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="background:linear-gradient(90deg,#10b981,#0ea5e9);border-radius:6px;height:28px;display:flex;align-items:center;padding:0 8px;font-size:10px;color:white;font-weight:600;">Story Card 1</div>
+            <div style="background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:6px;height:28px;display:flex;align-items:center;padding:0 8px;font-size:10px;color:white;font-weight:600;">Story Card 2</div>
+            <div style="background:linear-gradient(90deg,#f59e0b,#ef4444);border-radius:6px;height:28px;display:flex;align-items:center;padding:0 8px;font-size:10px;color:white;font-weight:600;">Story Card 3</div>
+            <div style="background:#0a2e1e;border-radius:6px;height:22px;display:flex;align-items:center;padding:0 8px;font-size:9px;color:#10b981;">+ See related Collection →</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;font-size:20px;color:#10b981;flex-shrink:0;">→</div>
+
+        <!-- User actions -->
+        <div style="flex:0.9;min-width:120px;background:#001a10;border:1px solid #1a3a2e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#10b981;font-weight:700;letter-spacing:1px;margin-bottom:8px;">④ USER ACTIONS</div>
+          <div style="display:flex;flex-direction:column;gap:5px;font-size:10px;color:#ccc;">
+            <div>→ Try app (opens link)</div>
+            <div>⬆ Boost app</div>
+            <div>⭐ Save creator</div>
+            <div>📦 View collection</div>
+            <div>🔗 Share card URL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div style="display:flex;justify-content:center;align-items:center;height:32px;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:2px;height:10px;background:#444;"></div>
+        <div style="font-size:10px;color:#555;background:#0a0a0a;padding:0 8px;">Boosts + favorites feed back into ranking + growth layer</div>
+        <div style="width:2px;height:10px;background:#444;"></div>
+      </div>
+    </div>
+
+    <!-- ═══ LAYER C: STORY-DRIVEN GROWTH & LOYALTY ═══ -->
+    <div style="background:linear-gradient(135deg,#1a0a2e,#2e0a1a);border:1px solid #ec4899;border-radius:16px;padding:20px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="background:#ec4899;color:white;border-radius:8px;padding:4px 12px;font-size:11px;font-weight:800;letter-spacing:1px;">LAYER C</div>
+        <div style="font-size:16px;font-weight:800;">📈 Story-driven Growth & Loyalty</div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+
+        <!-- Story Rings -->
+        <div style="flex:1;min-width:130px;background:#1a0a2e;border:1px solid #4a1a4e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#ec4899;font-weight:700;letter-spacing:1px;margin-bottom:8px;">🃏 STORY RINGS</div>
+          <div style="display:flex;gap:6px;margin-bottom:8px;justify-content:center;">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#ec4899);padding:2px;"><div style="width:100%;height:100%;border-radius:50%;background:#1a0a2e;display:flex;align-items:center;justify-content:center;font-size:11px;">📄</div></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);padding:2px;"><div style="width:100%;height:100%;border-radius:50%;background:#1a0a2e;display:flex;align-items:center;justify-content:center;font-size:11px;">🎙️</div></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#555;padding:2px;opacity:0.4;"><div style="width:100%;height:100%;border-radius:50%;background:#1a0a2e;display:flex;align-items:center;justify-content:center;font-size:11px;">✍️</div></div>
+          </div>
+          <div style="font-size:10px;color:#ccc;line-height:1.7;">Primary promo surface. Ranked by: recency, boosts, creator loyalty. Tap → full-screen Story card.</div>
+        </div>
+
+        <!-- Boost -->
+        <div style="flex:1;min-width:130px;background:#1a0a2e;border:1px solid #4a1a4e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#ec4899;font-weight:700;letter-spacing:1px;margin-bottom:8px;">⬆ BOOST</div>
+          <div style="font-size:10px;color:#ccc;line-height:1.7;">One per user per app. Affects: delivery ranking, Story ring placement. Signal of real user belief — not a like.</div>
+          <div style="margin-top:8px;background:#2e0a1a;border-radius:6px;padding:6px 8px;font-size:9px;color:#ec4899;">Boost → catalog re-ranks → more delivery appearances</div>
+        </div>
+
+        <!-- Favorite Creators -->
+        <div style="flex:1;min-width:130px;background:#1a0a2e;border:1px solid #4a1a4e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#ec4899;font-weight:700;letter-spacing:1px;margin-bottom:8px;">⭐ FAVORITE CREATORS</div>
+          <div style="font-size:10px;color:#ccc;line-height:1.7;">"Regulars" relationship. Save a creator → unlock their updates in My Feed. Newsletter subscription, not social follow.</div>
+          <div style="margin-top:8px;background:#2e0a1a;border-radius:6px;padding:6px 8px;font-size:9px;color:#ec4899;">Creator drops → notify followers → My Feed</div>
+        </div>
+
+        <!-- My Feed -->
+        <div style="flex:1;min-width:130px;background:#1a0a2e;border:1px solid #4a1a4e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#ec4899;font-weight:700;letter-spacing:1px;margin-bottom:8px;">📬 SUBSCRIPTION FEED</div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;">
+            <div style="background:#2e0a1a;border-radius:4px;padding:4px 8px;font-size:9px;color:#ccc;display:flex;gap:6px;align-items:center;"><span style="color:#10b981;">🆕</span> New Drop</div>
+            <div style="background:#2e0a1a;border-radius:4px;padding:4px 8px;font-size:9px;color:#ccc;display:flex;gap:6px;align-items:center;"><span style="color:#8b5cf6;">🧪</span> Beta</div>
+            <div style="background:#2e0a1a;border-radius:4px;padding:4px 8px;font-size:9px;color:#ccc;display:flex;gap:6px;align-items:center;"><span style="color:#f59e0b;">📢</span> Announcement</div>
+            <div style="background:#2e0a1a;border-radius:4px;padding:4px 8px;font-size:9px;color:#ccc;display:flex;gap:6px;align-items:center;"><span style="color:#0ea5e9;">🔄</span> Update</div>
+          </div>
+          <div style="font-size:9px;color:#aaa;">Chronological. No algorithm.</div>
+        </div>
+
+        <!-- Collections -->
+        <div style="flex:1;min-width:130px;background:#1a0a2e;border:1px solid #4a1a4e;border-radius:12px;padding:14px;">
+          <div style="font-size:10px;color:#ec4899;font-weight:700;letter-spacing:1px;margin-bottom:8px;">📦 APP COLLECTIONS</div>
+          <div style="display:flex;flex-direction:column;gap:4px;margin-bottom:6px;">
+            <div style="background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:6px;padding:5px 8px;font-size:9px;color:white;">🚀 Solo Founder Pack</div>
+            <div style="background:linear-gradient(90deg,#0ea5e9,#10b981);border-radius:6px;padding:5px 8px;font-size:9px;color:white;">✍️ Content Creator Kit</div>
+            <div style="background:linear-gradient(90deg,#f59e0b,#ef4444);border-radius:6px;padding:5px 8px;font-size:9px;color:white;">🎙️ Podcast Kit</div>
+          </div>
+          <div style="font-size:9px;color:#aaa;">AI-curated bundles. Shown after delivery results + Collections tab.</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Navigation map -->
+<div class="section">
+  <h3>User-side Navigation Map</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:130px;background:#0f0f1a;border:2px solid #6366f1;border-radius:12px;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px;">🏠</div>
+      <div style="font-size:12px;font-weight:800;margin-bottom:8px;color:#6366f1;">Discover</div>
+      <div style="display:flex;flex-direction:column;gap:3px;font-size:10px;color:#aaa;">
+        <div>🔵 Story rings row</div>
+        <div>🟣 Problem input card</div>
+        <div>⬛ Category grid (4×2)</div>
+        <div>🟦 Featured Collections</div>
+        <div>⬜ New Drops (vertical)</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:130px;background:#0f0f1a;border:1px solid #333;border-radius:12px;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px;">📦</div>
+      <div style="font-size:12px;font-weight:800;margin-bottom:8px;">Collections</div>
+      <div style="display:flex;flex-direction:column;gap:3px;font-size:10px;color:#aaa;">
+        <div>All curated bundles</div>
+        <div>Goal-based stacks</div>
+        <div>Collection detail view</div>
+        <div>App rows with Try button</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:130px;background:#0f0f1a;border:1px solid #333;border-radius:12px;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px;">📬</div>
+      <div style="font-size:12px;font-weight:800;margin-bottom:8px;">My Feed</div>
+      <div style="display:flex;flex-direction:column;gap:3px;font-size:10px;color:#aaa;">
+        <div>Creator updates only</div>
+        <div>Chronological order</div>
+        <div>New Drop / Beta / Update</div>
+        <div>Empty → suggest creators</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:130px;background:#0f0f1a;border:1px solid #333;border-radius:12px;padding:14px;">
+      <div style="font-size:20px;margin-bottom:6px;">👤</div>
+      <div style="font-size:12px;font-weight:800;margin-bottom:8px;">Profile</div>
+      <div style="display:flex;flex-direction:column;gap:3px;font-size:10px;color:#aaa;">
+        <div>Boosted apps</div>
+        <div>Favorite creators</div>
+        <div>Saved collections</div>
+        <div>Recent deliveries</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Story card universal unit callout -->
+<div class="section">
+  <div style="background:linear-gradient(135deg,#1a0a2e,#0a1a2e);border:1px solid #6366f1;border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div style="flex-shrink:0;">
+      <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:10px;padding:12px 16px;text-align:center;width:80px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.6);margin-bottom:3px;">PROBLEM</div>
+        <div style="font-size:10px;font-weight:700;color:white;line-height:1.3;">...</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.6);margin:4px 0 2px;">SOLUTION</div>
+        <div style="font-size:9px;font-weight:700;color:white;">AppName</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:6px;">🃏 Story Card — The Universal Unit</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div style="background:rgba(99,102,241,0.15);border:1px solid #6366f1;border-radius:6px;padding:4px 10px;font-size:10px;color:#a5b4fc;">Generated in Packaging</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid #10b981;border-radius:6px;padding:4px 10px;font-size:10px;color:#6ee7b7;">Delivered in Search</div>
+        <div style="background:rgba(236,72,153,0.15);border:1px solid #ec4899;border-radius:6px;padding:4px 10px;font-size:10px;color:#f9a8d4;">Shown in Story Rings</div>
+        <div style="background:rgba(245,158,11,0.15);border:1px solid #f59e0b;border-radius:6px;padding:4px 10px;font-size:10px;color:#fcd34d;">Shared via URL</div>
+      </div>
+    </div>
+  </div>
+</div>

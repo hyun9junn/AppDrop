@@ -1,0 +1,111 @@
+<h2>Section 4: Platform Architecture</h2>
+<p class="subtitle">Main components, data entities, and AI pipelines</p>
+
+<div class="section">
+  <h3>System Overview</h3>
+  <div class="mockup">
+    <div class="mockup-header">AppDrop — Component Map</div>
+    <div class="mockup-body" style="padding:24px;font-size:12px;">
+
+      <div style="display:flex;gap:12px;margin-bottom:12px;">
+        <div style="flex:1;background:#1a1a2e;border:1px solid #6366f1;border-radius:10px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:1px;margin-bottom:8px;">DEVELOPER SIDE</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">📝 Guided Submission Form</div>
+            <div style="text-align:center;color:#555;font-size:10px;">↓</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">🤖 AI Packaging Pipeline</div>
+            <div style="text-align:center;color:#555;font-size:10px;">↓</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">✅ Review & Publish</div>
+          </div>
+        </div>
+
+        <div style="flex:1;background:#1a1a2e;border:1px solid #10b981;border-radius:10px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#10b981;letter-spacing:1px;margin-bottom:8px;">APP CATALOG (CORE DB)</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">📦 App entity + metadata</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">🃏 Story card content</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">🏷️ Tags + use cases</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">📊 Boost count + signals</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">🔢 Embeddings (for delivery)</div>
+          </div>
+        </div>
+
+        <div style="flex:1;background:#1a1a2e;border:1px solid #0ea5e9;border-radius:10px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#0ea5e9;letter-spacing:1px;margin-bottom:8px;">USER SIDE</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">💬 Problem input</div>
+            <div style="text-align:center;color:#555;font-size:10px;">↓</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">🤖 AI Delivery Engine</div>
+            <div style="text-align:center;color:#555;font-size:10px;">↓</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">🃏 Story cards returned</div>
+            <div style="text-align:center;color:#555;font-size:10px;">↓</div>
+            <div style="background:#0f0f1a;border-radius:6px;padding:8px;">⬆ Boost / + Follow</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;">
+        <div style="flex:1;background:#1a1a2e;border:1px solid #8b5cf6;border-radius:10px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#8b5cf6;letter-spacing:1px;margin-bottom:8px;">AI PACKAGING PIPELINE</div>
+          <div style="font-size:11px;color:#ccc;line-height:1.9;">
+            Input: 7 form answers<br>
+            → LLM generates: description, tagline, use cases, social copy<br>
+            → Template engine renders: Story card<br>
+            → Tags auto-generated + editable<br>
+            → Embeddings created for delivery matching
+          </div>
+        </div>
+        <div style="flex:1;background:#1a1a2e;border:1px solid #f59e0b;border-radius:10px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#f59e0b;letter-spacing:1px;margin-bottom:8px;">AI DELIVERY ENGINE</div>
+          <div style="font-size:11px;color:#ccc;line-height:1.9;">
+            Input: user's plain-language problem<br>
+            → LLM interprets intent + extracts key needs<br>
+            → Semantic search against app embeddings<br>
+            → Re-rank by boost signals + recency<br>
+            → Return top 3–5 as Story cards
+          </div>
+        </div>
+        <div style="flex:1;background:#1a1a2e;border:1px solid #ec4899;border-radius:10px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#ec4899;letter-spacing:1px;margin-bottom:8px;">GROWTH & LOYALTY</div>
+          <div style="font-size:11px;color:#ccc;line-height:1.9;">
+            Boost: stored per-user per-app<br>
+            → Affects delivery ranking weight<br><br>
+            Follow: user ↔ creator subscription<br>
+            → New app drop triggers notification<br><br>
+            Shareable Story card link → deep links into delivery result
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Core Data Entities</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <div style="background:#1e1e2e;border-radius:8px;padding:12px 16px;min-width:160px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:#6366f1;">App</div>
+      <div style="font-size:11px;color:#aaa;line-height:1.9;">id, title, tagline<br>link, creator_id<br>description, use_cases<br>tags, access_type<br>pricing, story_card<br>social_copy, embedding<br>boost_count, status</div>
+    </div>
+    <div style="background:#1e1e2e;border-radius:8px;padding:12px 16px;min-width:160px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:#10b981;">Creator</div>
+      <div style="font-size:11px;color:#aaa;line-height:1.9;">id, name, bio<br>avatar, links<br>apps[ ]<br>follower_count</div>
+    </div>
+    <div style="background:#1e1e2e;border-radius:8px;padding:12px 16px;min-width:160px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:#0ea5e9;">User</div>
+      <div style="font-size:11px;color:#aaa;line-height:1.9;">id, email<br>boosted_apps[ ]<br>followed_creators[ ]<br>query_history[ ]</div>
+    </div>
+    <div style="background:#1e1e2e;border-radius:8px;padding:12px 16px;min-width:160px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:#f59e0b;">Story Card</div>
+      <div style="font-size:11px;color:#aaa;line-height:1.9;">app_id<br>problem_statement<br>solution_statement<br>gradient_theme<br>shareable_url</div>
+    </div>
+    <div style="background:#1e1e2e;border-radius:8px;padding:12px 16px;min-width:160px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:#8b5cf6;">Boost</div>
+      <div style="font-size:11px;color:#aaa;line-height:1.9;">user_id, app_id<br>created_at<br>(one per user per app)</div>
+    </div>
+    <div style="background:#1e1e2e;border-radius:8px;padding:12px 16px;min-width:160px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:#ec4899;">Follow</div>
+      <div style="font-size:11px;color:#aaa;line-height:1.9;">user_id<br>creator_id<br>created_at</div>
+    </div>
+  </div>
+</div>

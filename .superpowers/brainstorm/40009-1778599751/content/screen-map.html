@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppDrop — Screen Map</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1a1a2e;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 40px 32px 60px;
+    min-height: 100vh;
+  }
+  h1 {
+    text-align: center;
+    color: white;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
+  .layer-section {
+    margin-bottom: 48px;
+  }
+  .layer-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .layer-badge {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: white;
+  }
+  .layer-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+  }
+  .layer-desc {
+    font-size: 12px;
+    color: #666;
+  }
+  .phones-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .phone-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .phone-label {
+    font-size: 11px;
+    color: #888;
+    font-weight: 600;
+    text-align: center;
+    max-width: 180px;
+    line-height: 1.4;
+  }
+  .phone {
+    width: 185px;
+    height: 400px;
+    background: #1c1c1e;
+    border-radius: 36px;
+    border: 1.5px solid #3a3a3c;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05) inset;
+    flex-shrink: 0;
+  }
+  .phone-screen {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 34px;
+    overflow: hidden;
+  }
+  .dynamic-island {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 14px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 10;
+  }
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px 0;
+    position: relative;
+    z-index: 5;
+    height: 32px;
+  }
+  .status-time { font-size: 9px; font-weight: 700; }
+  .status-icons { font-size: 8px; display: flex; gap: 3px; align-items: center; }
+  .home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+    z-index: 10;
+  }
+  .screen-content {
+    height: calc(100% - 32px - 18px);
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  /* Common screen elements */
+  .s-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .s-logo { font-size: 15px; font-weight: 900; color: #6366f1; }
+  .s-title { font-size: 13px; font-weight: 700; color: white; }
+  .s-icon { font-size: 14px; }
+  .s-section-label {
+    font-size: 8px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 8px 14px 4px;
+  }
+  .s-tab-bar {
+    position: absolute;
+    bottom: 20px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-around;
+    background: rgba(28,28,30,0.95);
+    border-top: 0.5px solid rgba(255,255,255,0.1);
+    padding: 6px 0 2px;
+  }
+  .s-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .s-tab-icon { font-size: 14px; }
+  .s-tab-label { font-size: 7px; font-weight: 600; }
+  .s-tab.active .s-tab-label { color: #6366f1; }
+  .s-tab:not(.active) .s-tab-label { color: #666; }
+</style>
+</head>
+<body>
+
+<h1>AppDrop — Screen Map</h1>
+<div class="subtitle">All screens by layer · Mobile UI · MVP</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- LAYER A: PACKAGING -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="layer-section">
+  <div class="layer-label">
+    <div class="layer-badge" style="background:#6366f1;">LAYER A</div>
+    <div class="layer-title">📦 Packaging</div>
+    <div class="layer-desc">Developer submits → AI generates full app package</div>
+  </div>
+  <div class="phones-row">
+
+    <!-- A1: Submission Form -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#0f0f1a;">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="color:white;"><span class="status-time">9:41</span><div class="status-icons">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div class="s-topbar"><span class="s-logo">AppDrop</span><span style="font-size:9px;color:#6366f1;font-weight:700;">Developer</span></div>
+            <div style="padding:10px 14px 0;">
+              <div style="font-size:13px;font-weight:800;color:white;margin-bottom:2px;">Package Your App</div>
+              <div style="font-size:9px;color:#555;margin-bottom:10px;">Answer 7 questions — AI does the rest</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div>
+                  <div style="font-size:8px;color:#6366f1;font-weight:700;margin-bottom:2px;">APP LINK</div>
+                  <div style="background:#1e1e2e;border-radius:7px;padding:7px 10px;font-size:9px;color:#555;border:1px solid #333;">https://your-app.com</div>
+                </div>
+                <div>
+                  <div style="font-size:8px;color:#6366f1;font-weight:700;margin-bottom:2px;">WHAT PROBLEM DOES IT SOLVE?</div>
+                  <div style="background:#1e1e2e;border-radius:7px;padding:7px 10px;font-size:9px;color:#aaa;border:1px solid #444;height:34px;">People waste hours resizing images...</div>
+                </div>
+                <div>
+                  <div style="font-size:8px;color:#6366f1;font-weight:700;margin-bottom:2px;">WHO IS IT FOR?</div>
+                  <div style="background:#1e1e2e;border-radius:7px;padding:7px 10px;font-size:9px;color:#555;border:1px solid #333;">Social media managers, freelancers</div>
+                </div>
+                <div>
+                  <div style="font-size:8px;color:#6366f1;font-weight:700;margin-bottom:2px;">3 CORE FEATURES</div>
+                  <div style="background:#1e1e2e;border-radius:7px;padding:7px 10px;font-size:9px;color:#555;border:1px solid #333;">Batch resize, format convert...</div>
+                </div>
+                <div>
+                  <div style="font-size:8px;color:#6366f1;font-weight:700;margin-bottom:2px;">ACCESS TYPE</div>
+                  <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                    <span style="padding:3px 8px;background:#6366f1;border-radius:10px;font-size:8px;color:white;">Web App</span>
+                    <span style="padding:3px 8px;background:#1e1e2e;border-radius:10px;font-size:8px;color:#666;border:1px solid #333;">API</span>
+                    <span style="padding:3px 8px;background:#1e1e2e;border-radius:10px;font-size:8px;color:#666;border:1px solid #333;">Download</span>
+                  </div>
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <div style="flex:1;">
+                    <div style="font-size:8px;color:#6366f1;font-weight:700;margin-bottom:2px;">PRICING</div>
+                    <div style="display:flex;gap:3px;">
+                      <span style="padding:3px 7px;background:#6366f1;border-radius:10px;font-size:8px;color:white;">Free</span>
+                      <span style="padding:3px 7px;background:#1e1e2e;border-radius:10px;font-size:8px;color:#666;border:1px solid #333;">Freemium</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="background:#6366f1;border-radius:10px;padding:9px;text-align:center;margin-top:10px;">
+                <div style="font-size:10px;font-weight:800;color:white;">Generate My App Package →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-indicator"></div>
+      </div>
+      <div class="phone-label">A1 · Submission Form</div>
+    </div>
+
+    <!-- A2: AI Generating -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#0f0f1a;">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="color:white;"><span class="status-time">9:41</span><div class="status-icons">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div class="s-topbar"><span class="s-logo">AppDrop</span></div>
+            <div style="padding:40px 20px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;">
+              <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 30px rgba(99,102,241,0.5);">🤖</div>
+              <div>
+                <div style="font-size:14px;font-weight:800;color:white;margin-bottom:4px;">Packaging your app...</div>
+                <div style="font-size:9px;color:#555;">AI is generating your full package</div>
+              </div>
+              <div style="width:100%;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:16px;height:16px;border-radius:50%;background:#6366f1;display:flex;align-items:center;justify-content:center;font-size:8px;color:white;flex-shrink:0;">✓</div>
+                  <div style="flex:1;font-size:9px;color:#6366f1;">Description + tagline</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:16px;height:16px;border-radius:50%;background:#6366f1;display:flex;align-items:center;justify-content:center;font-size:8px;color:white;flex-shrink:0;">✓</div>
+                  <div style="flex:1;font-size:9px;color:#6366f1;">Use cases generated</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:pulse 1s infinite;">
+                    <div style="width:6px;height:6px;border-radius:50%;background:white;"></div>
+                  </div>
+                  <div style="font-size:9px;color:#aaa;">Rendering Story card...</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;opacity:0.3;">
+                  <div style="width:16px;height:16px;border-radius:50%;border:1px solid #333;flex-shrink:0;"></div>
+                  <div style="font-size:9px;color:#555;">Social copy</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;opacity:0.3;">
+                  <div style="width:16px;height:16px;border-radius:50%;border:1px solid #333;flex-shrink:0;"></div>
+                  <div style="font-size:9px;color:#555;">Creating embeddings</div>
+                </div>
+              </div>
+              <div style="width:100%;height:3px;background:#1e1e2e;border-radius:3px;margin-top:8px;">
+                <div style="width:60%;height:100%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:3px;"></div>
+              </div>
+              <div style="font-size:9px;color:#555;">~15 seconds</div>
+            </div>
+          </div>
+        </div>
+        <div class="home-indicator"></div>
+      </div>
+      <div class="phone-label">A2 · AI Generating</div>
+    </div>
+
+    <!-- A3: Package Preview -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#0f0f1a;">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="color:white;"><span class="status-time">9:41</span><div class="status-icons">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div class="s-topbar">
+              <span style="font-size:11px;color:#aaa;">← Edit</span>
+              <span class="s-title">Preview</span>
+              <span style="font-size:9px;color:#6366f1;font-weight:700;">Publish</span>
+            </div>
+            <div style="padding:10px 14px;display:flex;flex-direction:column;gap:8px;">
+              <!-- Story card preview -->
+              <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;padding:14px;text-align:center;">
+                <div style="font-size:7px;color:rgba(255,255,255,0.55);letter-spacing:1.5px;margin-bottom:4px;">THE PROBLEM</div>
+                <div style="font-size:11px;font-weight:700;color:white;line-height:1.4;margin-bottom:6px;">Resizing images for every platform wastes hours</div>
+                <div style="width:20px;height:1.5px;background:rgba(255,255,255,0.25);margin:0 auto 6px;"></div>
+                <div style="font-size:7px;color:rgba(255,255,255,0.55);letter-spacing:1.5px;margin-bottom:3px;">THE SOLUTION</div>
+                <div style="font-size:11px;font-weight:700;color:white;">PixelDrop ⚡</div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.75);margin-bottom:8px;">Upload once, get every size instantly</div>
+                <div style="background:white;border-radius:8px;padding:5px;font-size:9px;font-weight:700;color:#6366f1;">Try Free →</div>
+              </div>
+              <!-- Hosted page preview -->
+              <div style="background:#1e1e2e;border-radius:10px;padding:10px;">
+                <div style="font-size:12px;font-weight:700;color:white;margin-bottom:2px;">PixelDrop ⚡</div>
+                <div style="font-size:9px;color:#aaa;margin-bottom:6px;">Upload once, get every size instantly</div>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+                  <span style="padding:2px 7px;background:#111;border-radius:8px;font-size:8px;color:#aaa;border:1px solid #333;">Images</span>
+                  <span style="padding:2px 7px;background:#111;border-radius:8px;font-size:8px;color:#aaa;border:1px solid #333;">Free</span>
+                  <span style="padding:2px 7px;background:#111;border-radius:8px;font-size:8px;color:#aaa;border:1px solid #333;">Web App</span>
+                </div>
+                <div style="font-size:8px;color:#ccc;line-height:1.5;margin-bottom:6px;">Tired of wrong image sizes for every platform? PixelDrop resizes in seconds.</div>
+                <div style="font-size:8px;font-weight:700;color:#aaa;margin-bottom:3px;">Use cases</div>
+                <div style="font-size:8px;color:#ccc;line-height:1.7;">• Resize product photos for Shopify<br/>• Prep for all social platforms at once<br/>• Remove backgrounds instantly</div>
+              </div>
+              <!-- Social copy preview -->
+              <div style="background:#1e1e2e;border-radius:10px;padding:8px;">
+                <div style="font-size:8px;font-weight:700;color:#aaa;margin-bottom:4px;">TWITTER/X COPY</div>
+                <div style="font-size:8px;color:#ccc;line-height:1.5;">Stop wasting 20 mins resizing images 😤 PixelDrop does it in 3 seconds. Free → [link]</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-indicator"></div>
+      </div>
+      <div class="phone-label">A3 · Package Preview</div>
+    </div>
+
+    <!-- A4: Creator Profile -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#0f0f1a;">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="color:white;"><span class="status-time">9:41</span><div class="status-icons">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div class="s-topbar"><span class="s-title">My Profile</span><span style="font-size:9px;color:#6366f1;">+ New App</span></div>
+            <div style="padding:14px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                <div style="width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">K</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:white;">KimDev Studio</div>
+                  <div style="font-size:9px;color:#555;margin-bottom:3px;">AI tools for everyday problems</div>
+                  <div style="font-size:8px;color:#6366f1;font-weight:600;">⭐ 142 Regulars</div>
+                </div>
+              </div>
+              <div style="background:#1e1e2e;border-radius:10px;padding:8px 12px;margin-bottom:10px;">
+                <div style="font-size:8px;font-weight:700;color:#aaa;margin-bottom:6px;">📢 POST AN UPDATE</div>
+                <div style="background:#111;border-radius:7px;padding:7px 10px;font-size:8px;color:#444;margin-bottom:6px;">Share a new drop, beta, or announcement...</div>
+                <div style="display:flex;gap:4px;">
+                  <span style="padding:3px 8px;background:#1a3a2e;border-radius:8px;font-size:7px;color:#10b981;font-weight:700;">🆕 New Drop</span>
+                  <span style="padding:3px 8px;background:#2e1a3a;border-radius:8px;font-size:7px;color:#8b5cf6;font-weight:700;">🧪 Beta</span>
+                  <span style="padding:3px 8px;background:#2e2a1a;border-radius:8px;font-size:7px;color:#f59e0b;font-weight:700;">📢 Update</span>
+                </div>
+              </div>
+              <div style="font-size:9px;font-weight:700;color:#aaa;margin-bottom:8px;">MY APPS</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="background:#1e1e2e;border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px;">
+                  <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">⚡</div>
+                  <div style="flex:1;">
+                    <div style="font-size:10px;font-weight:700;color:white;">PixelDrop</div>
+                    <div style="font-size:8px;color:#555;">⬆ 512 boosts · 2.1k views</div>
+                  </div>
+                  <div style="font-size:8px;color:#10b981;font-weight:700;">Live</div>
+                </div>
+                <div style="background:#1e1e2e;border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px;">
+                  <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#10b981,#0ea5e9);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">📄</div>
+                  <div style="flex:1;">
+                    <div style="font-size:10px;font-weight:700;color:white;">ResumeAI</div>
+                    <div style="font-size:8px;color:#555;">⬆ 243 boosts · 980 views</div>
+                  </div>
+                  <div style="font-size:8px;color:#10b981;font-weight:700;">Live</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-indicator"></div>
+      </div>
+      <div class="phone-label">A4 · Creator Profile</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- LAYER B: DELIVERY -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="layer-section">
+  <div class="layer-label">
+    <div class="layer-badge" style="background:#10b981;">LAYER B</div>
+    <div class="layer-title">🚀 Delivery</div>
+    <div class="layer-desc">User describes problem → AI delivers matching apps as Story cards</div>
+  </div>
+  <div class="phones-row">
+
+    <!-- B1: Discover Home -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#f5f5f7;">
+          <div class="dynamic-island" style="background:#000;"></div>
+          <div class="status-bar" style="color:#111;"><span class="status-time">9:41</span><div class="status-icons" style="color:#333;">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div style="background:#fff;padding:6px 14px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid #eee;">
+              <span style="font-size:15px;font-weight:900;color:#6366f1;">AppDrop</span>
+              <div style="display:flex;gap:10px;">
+                <span style="font-size:14px;">🔍</span>
+                <span style="font-size:14px;">🔔</span>
+              </div>
+            </div>
+            <!-- Story rings -->
+            <div style="background:#fff;padding:8px 14px 10px;border-bottom:0.5px solid #eee;">
+              <div style="display:flex;gap:10px;overflow-x:auto;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
+                  <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#ec4899);padding:2px;"><div style="width:100%;height:100%;border-radius:50%;background:#fff;padding:1.5px;"><div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:15px;">📄</div></div></div>
+                  <div style="font-size:7px;color:#333;font-weight:600;text-align:center;width:42px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">ResumeAI</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
+                  <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);padding:2px;"><div style="width:100%;height:100%;border-radius:50%;background:#fff;padding:1.5px;"><div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#10b981);display:flex;align-items:center;justify-content:center;font-size:15px;">🎙️</div></div></div>
+                  <div style="font-size:7px;color:#333;font-weight:600;text-align:center;width:42px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">VoiceNote</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
+                  <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#10b981,#0ea5e9);padding:2px;"><div style="width:100%;height:100%;border-radius:50%;background:#fff;padding:1.5px;"><div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:15px;">✍️</div></div></div>
+                  <div style="font-size:7px;color:#333;font-weight:600;text-align:center;width:42px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">BlogAI</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;opacity:0.35;">
+                  <div style="width:42px;height:42px;border-radius:50%;background:#ccc;padding:2px;"><div style="width:100%;height:100%;border-radius:50%;background:#fff;padding:1.5px;"><div style="width:100%;height:100%;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:15px;">🎨</div></div></div>
+                  <div style="font-size:7px;color:#aaa;font-weight:600;text-align:center;width:42px;">LogoAI</div>
+                </div>
+              </div>
+            </div>
+            <!-- Problem input card -->
+            <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);margin:8px 10px 0;border-radius:12px;padding:10px 12px;">
+              <div style="font-size:10px;font-weight:800;color:white;margin-bottom:5px;">What are you trying to do?</div>
+              <div style="background:rgba(255,255,255,0.2);border-radius:8px;padding:6px 8px;font-size:8px;color:rgba(255,255,255,0.75);">Describe your problem...</div>
+            </div>
+            <!-- Category grid -->
+            <div style="background:#fff;margin:8px 10px 0;border-radius:12px;padding:8px;">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#f0f0ff;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">✍️</div><div style="font-size:7px;color:#444;font-weight:600;">Writing</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#fff0f0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">🖼️</div><div style="font-size:7px;color:#444;font-weight:600;">Images</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#f0fff0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">🎙️</div><div style="font-size:7px;color:#444;font-weight:600;">Audio</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#fffff0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">🎬</div><div style="font-size:7px;color:#444;font-weight:600;">Video</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#f0f8ff;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">📊</div><div style="font-size:7px;color:#444;font-weight:600;">Data</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#fff5f0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">💼</div><div style="font-size:7px;color:#444;font-weight:600;">Business</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#f5f0ff;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">🎨</div><div style="font-size:7px;color:#444;font-weight:600;">Design</div></div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px;"><div style="width:32px;height:32px;background:#f0fafa;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;">🤖</div><div style="font-size:7px;color:#444;font-weight:600;">AI Tools</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="s-tab-bar" style="background:rgba(255,255,255,0.95);border-top:0.5px solid #eee;">
+            <div class="s-tab active"><span class="s-tab-icon">🏠</span><span class="s-tab-label" style="color:#6366f1;">Discover</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📦</span><span class="s-tab-label" style="color:#999;">Collections</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📬</span><span class="s-tab-label" style="color:#999;">My Feed</span></div>
+            <div class="s-tab"><span class="s-tab-icon">👤</span><span class="s-tab-label" style="color:#999;">Profile</span></div>
+          </div>
+        </div>
+        <div class="home-indicator" style="background:rgba(0,0,0,0.2);"></div>
+      </div>
+      <div class="phone-label">B1 · Discover Home</div>
+    </div>
+
+    <!-- B2: Problem Input (expanded) -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#0f0f1a;">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="color:white;"><span class="status-time">9:41</span><div class="status-icons">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div style="padding:10px 14px 0;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:9px;color:#6366f1;font-weight:700;">Cancel</span>
+              <span style="font-size:11px;font-weight:700;color:white;">Find Apps</span>
+              <span style="width:32px;"></span>
+            </div>
+            <div style="padding:14px;">
+              <div style="font-size:16px;font-weight:800;color:white;margin-bottom:4px;">What are you<br/>trying to do?</div>
+              <div style="font-size:10px;color:#555;margin-bottom:14px;">Describe your problem in plain language</div>
+              <div style="background:#1e1e2e;border-radius:12px;padding:12px;border:1.5px solid #6366f1;margin-bottom:12px;min-height:80px;">
+                <div style="font-size:11px;color:white;line-height:1.6;">I need to turn my voice notes into a structured blog post automatically</div>
+                <div style="width:1.5px;height:14px;background:#6366f1;display:inline-block;animation:blink 1s infinite;margin-left:1px;vertical-align:text-bottom;"></div>
+              </div>
+              <div style="background:#6366f1;border-radius:12px;padding:12px;text-align:center;margin-bottom:16px;">
+                <div style="font-size:12px;font-weight:800;color:white;">Deliver Apps →</div>
+              </div>
+              <div style="font-size:9px;color:#444;font-weight:700;margin-bottom:8px;">TRY THESE</div>
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="background:#1e1e2e;border-radius:8px;padding:7px 10px;font-size:9px;color:#aaa;">✍️ Write a blog post from my notes</div>
+                <div style="background:#1e1e2e;border-radius:8px;padding:7px 10px;font-size:9px;color:#aaa;">🎙️ Transcribe a voice recording</div>
+                <div style="background:#1e1e2e;border-radius:8px;padding:7px 10px;font-size:9px;color:#aaa;">🖼️ Remove background from photos</div>
+                <div style="background:#1e1e2e;border-radius:8px;padding:7px 10px;font-size:9px;color:#aaa;">📊 Turn data into a chart</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-indicator"></div>
+      </div>
+      <div class="phone-label">B2 · Problem Input</div>
+    </div>
+
+    <!-- B3: Delivery Results -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#f5f5f7;">
+          <div class="dynamic-island" style="background:#000;"></div>
+          <div class="status-bar" style="color:#111;"><span class="status-time">9:41</span><div class="status-icons" style="color:#333;">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div style="background:#fff;padding:6px 14px 8px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid #eee;">
+              <span style="font-size:13px;color:#999;">←</span>
+              <span style="font-size:11px;font-weight:700;color:#111;flex:1;">Apps for: voice notes → blog post</span>
+            </div>
+            <div style="padding:8px 10px;display:flex;flex-direction:column;gap:7px;overflow-y:auto;height:calc(100% - 42px - 44px);">
+              <!-- Card 1 -->
+              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #eee;">
+                <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:10px 12px;">
+                  <div style="font-size:7px;color:rgba(255,255,255,0.6);letter-spacing:1px;margin-bottom:3px;">THE PROBLEM</div>
+                  <div style="font-size:10px;font-weight:700;color:white;line-height:1.4;">Turning voice notes into blog posts takes hours of manual work</div>
+                </div>
+                <div style="padding:8px 10px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                    <div><div style="font-size:11px;font-weight:700;color:#111;">VoiceBlog AI</div><div style="font-size:8px;color:#999;">by WriteSmart · Free</div></div>
+                    <div style="font-size:8px;color:#6366f1;font-weight:700;">⬆ 412</div>
+                  </div>
+                  <div style="font-size:8px;color:#555;line-height:1.5;margin-bottom:7px;">Upload a voice note → get a full, formatted blog post in your style.</div>
+                  <div style="display:flex;gap:5px;">
+                    <div style="flex:2;background:#6366f1;border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">Try App →</div>
+                    <div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⬆</div>
+                    <div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⭐</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #eee;">
+                <div style="background:linear-gradient(135deg,#0ea5e9,#10b981);padding:10px 12px;">
+                  <div style="font-size:7px;color:rgba(255,255,255,0.6);letter-spacing:1px;margin-bottom:3px;">THE PROBLEM</div>
+                  <div style="font-size:10px;font-weight:700;color:white;line-height:1.4;">Voice recordings are messy and hard to turn into structured content</div>
+                </div>
+                <div style="padding:8px 10px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                    <div><div style="font-size:11px;font-weight:700;color:#111;">NoteFlow</div><div style="font-size:8px;color:#999;">by NovaTech · Freemium</div></div>
+                    <div style="font-size:8px;color:#6366f1;font-weight:700;">⬆ 287</div>
+                  </div>
+                  <div style="font-size:8px;color:#555;line-height:1.5;margin-bottom:7px;">Transcribe + structure + rewrite your voice memos as polished content.</div>
+                  <div style="display:flex;gap:5px;">
+                    <div style="flex:2;background:#6366f1;border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">Try App →</div>
+                    <div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⬆</div>
+                    <div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⭐</div>
+                  </div>
+                </div>
+              </div>
+              <!-- Collection suggestion -->
+              <div style="background:#f0f0ff;border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px;border:1px solid #d0d0ff;">
+                <div style="font-size:18px;">✍️</div>
+                <div style="flex:1;"><div style="font-size:9px;font-weight:700;color:#6366f1;">Content Creator Toolkit</div><div style="font-size:8px;color:#888;">4 apps for writing and publishing</div></div>
+                <div style="font-size:9px;color:#6366f1;font-weight:600;">View →</div>
+              </div>
+            </div>
+          </div>
+          <div class="s-tab-bar" style="background:rgba(255,255,255,0.95);border-top:0.5px solid #eee;">
+            <div class="s-tab active"><span class="s-tab-icon">🏠</span><span class="s-tab-label" style="color:#6366f1;">Discover</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📦</span><span class="s-tab-label" style="color:#999;">Collections</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📬</span><span class="s-tab-label" style="color:#999;">My Feed</span></div>
+            <div class="s-tab"><span class="s-tab-icon">👤</span><span class="s-tab-label" style="color:#999;">Profile</span></div>
+          </div>
+        </div>
+        <div class="home-indicator" style="background:rgba(0,0,0,0.2);"></div>
+      </div>
+      <div class="phone-label">B3 · Delivery Results</div>
+    </div>
+
+    <!-- B4: Category Browse -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#f5f5f7;">
+          <div class="dynamic-island" style="background:#000;"></div>
+          <div class="status-bar" style="color:#111;"><span class="status-time">9:41</span><div class="status-icons" style="color:#333;">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div style="background:#fff;padding:6px 14px 8px;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid #eee;">
+              <span style="font-size:13px;color:#999;">←</span>
+              <span style="font-size:13px;font-weight:800;color:#111;flex:1;">✍️ Writing Apps</span>
+              <span style="font-size:9px;color:#999;">Sort ▾</span>
+            </div>
+            <div style="padding:8px 10px;display:flex;flex-direction:column;gap:7px;height:calc(100% - 42px - 44px);overflow-y:auto;">
+              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #eee;">
+                <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);height:56px;display:flex;align-items:center;padding:0 12px;">
+                  <div><div style="font-size:7px;color:rgba(255,255,255,0.6);letter-spacing:1px;margin-bottom:2px;">THE PROBLEM</div><div style="font-size:10px;font-weight:700;color:white;">Turning notes into polished blog posts takes hours</div></div>
+                </div>
+                <div style="padding:8px 10px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;"><div><div style="font-size:11px;font-weight:700;color:#111;">BlogAI</div><div style="font-size:8px;color:#999;">WriteSmart · Web · Free</div></div><div style="font-size:9px;color:#6366f1;font-weight:700;">⬆ 512</div></div>
+                  <div style="font-size:8px;color:#555;line-height:1.4;margin-bottom:6px;">Paste your notes, get a full blog post in your voice.</div>
+                  <div style="display:flex;gap:5px;"><div style="flex:2;background:#6366f1;border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">Try →</div><div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⬆</div><div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⭐</div></div>
+                </div>
+              </div>
+              <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #eee;">
+                <div style="background:linear-gradient(135deg,#f59e0b,#ef4444);height:56px;display:flex;align-items:center;padding:0 12px;">
+                  <div><div style="font-size:7px;color:rgba(255,255,255,0.6);letter-spacing:1px;margin-bottom:2px;">THE PROBLEM</div><div style="font-size:10px;font-weight:700;color:white;">Writing cold emails that get replies is really hard</div></div>
+                </div>
+                <div style="padding:8px 10px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;"><div><div style="font-size:11px;font-weight:700;color:#111;">ColdCraft</div><div style="font-size:8px;color:#999;">OutreachLabs · Freemium</div></div><div style="font-size:9px;color:#6366f1;font-weight:700;">⬆ 318</div></div>
+                  <div style="font-size:8px;color:#555;line-height:1.4;margin-bottom:6px;">Describe who you're emailing and why — get a personalized cold email.</div>
+                  <div style="display:flex;gap:5px;"><div style="flex:2;background:#6366f1;border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">Try →</div><div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⬆</div><div style="flex:1;background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;color:#555;">⭐</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="s-tab-bar" style="background:rgba(255,255,255,0.95);border-top:0.5px solid #eee;">
+            <div class="s-tab active"><span class="s-tab-icon">🏠</span><span class="s-tab-label" style="color:#6366f1;">Discover</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📦</span><span class="s-tab-label" style="color:#999;">Collections</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📬</span><span class="s-tab-label" style="color:#999;">My Feed</span></div>
+            <div class="s-tab"><span class="s-tab-icon">👤</span><span class="s-tab-label" style="color:#999;">Profile</span></div>
+          </div>
+        </div>
+        <div class="home-indicator" style="background:rgba(0,0,0,0.2);"></div>
+      </div>
+      <div class="phone-label">B4 · Category Browse</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- LAYER C: STORY-DRIVEN GROWTH & LOYALTY -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="layer-section">
+  <div class="layer-label">
+    <div class="layer-badge" style="background:#ec4899;">LAYER C</div>
+    <div class="layer-title">📈 Story-driven Growth & Loyalty</div>
+    <div class="layer-desc">Story rings · Boost · Favorite creators · Subscription feed · Collections</div>
+  </div>
+  <div class="phones-row">
+
+    <!-- C1: Story Ring Viewer -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#000;">
+          <div class="dynamic-island"></div>
+          <div class="status-bar" style="color:white;"><span class="status-time">9:41</span><div class="status-icons">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <!-- Progress bars -->
+            <div style="display:flex;gap:2px;padding:4px 10px 0;">
+              <div style="flex:1;height:2px;background:white;border-radius:2px;"></div>
+              <div style="flex:1;height:2px;background:rgba(255,255,255,0.25);border-radius:2px;"></div>
+              <div style="flex:1;height:2px;background:rgba(255,255,255,0.25);border-radius:2px;"></div>
+              <div style="flex:1;height:2px;background:rgba(255,255,255,0.25);border-radius:2px;"></div>
+            </div>
+            <!-- Creator info -->
+            <div style="display:flex;align-items:center;gap:6px;padding:6px 10px;">
+              <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;">K</div>
+              <div style="flex:1;"><div style="font-size:9px;font-weight:700;color:white;">KimDev Studio</div><div style="font-size:7px;color:rgba(255,255,255,0.5);">New drop · 2h ago</div></div>
+              <div style="font-size:14px;color:rgba(255,255,255,0.5);">✕</div>
+            </div>
+            <!-- Story card -->
+            <div style="background:linear-gradient(160deg,#1a0533,#0d1b4b);margin:0 8px;border-radius:14px;padding:18px 14px;text-align:center;">
+              <div style="font-size:8px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-bottom:8px;">THE PROBLEM</div>
+              <div style="font-size:14px;font-weight:800;color:white;line-height:1.4;margin-bottom:10px;">Tailoring your CV to every job takes way too long</div>
+              <div style="width:24px;height:1px;background:rgba(255,255,255,0.15);margin:0 auto 10px;"></div>
+              <div style="font-size:8px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-bottom:5px;">THE SOLUTION</div>
+              <div style="font-size:12px;font-weight:700;color:#a5b4fc;margin-bottom:4px;">ResumeAI</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:12px;">Paste a job description. Upload your resume. Get a tailored version in 60 seconds.</div>
+              <div style="display:flex;flex-direction:column;gap:4px;text-align:left;margin-bottom:12px;">
+                <div style="font-size:9px;color:rgba(255,255,255,0.65);display:flex;gap:5px;"><span style="color:#a5b4fc;">✓</span> Matches keywords automatically</div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.65);display:flex;gap:5px;"><span style="color:#a5b4fc;">✓</span> Keeps your original voice</div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.65);display:flex;gap:5px;"><span style="color:#a5b4fc;">✓</span> Any file format supported</div>
+              </div>
+              <div style="background:white;border-radius:10px;padding:9px;font-size:10px;font-weight:800;color:#1a0533;">Try ResumeAI — Free →</div>
+            </div>
+            <!-- Actions -->
+            <div style="display:flex;gap:6px;padding:10px 16px 0;">
+              <div style="flex:1;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px;text-align:center;font-size:9px;font-weight:600;color:white;">⬆ Boost</div>
+              <div style="flex:1;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:6px;text-align:center;font-size:9px;font-weight:600;color:white;">⭐ Save Creator</div>
+            </div>
+            <div style="text-align:center;padding-top:6px;font-size:7px;color:rgba(255,255,255,0.2);">Swipe up to open · Tap sides to navigate</div>
+          </div>
+        </div>
+        <div class="home-indicator"></div>
+      </div>
+      <div class="phone-label">C1 · Story Ring Viewer</div>
+    </div>
+
+    <!-- C2: My Feed -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#f5f5f7;">
+          <div class="dynamic-island" style="background:#000;"></div>
+          <div class="status-bar" style="color:#111;"><span class="status-time">9:41</span><div class="status-icons" style="color:#333;">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div style="background:#fff;padding:6px 14px 8px;border-bottom:0.5px solid #eee;">
+              <div style="font-size:14px;font-weight:800;color:#111;">📬 My Feed</div>
+              <div style="font-size:8px;color:#999;">From your favorite creators</div>
+            </div>
+            <div style="padding:8px 10px;display:flex;flex-direction:column;gap:6px;height:calc(100% - 44px - 44px);overflow-y:auto;">
+              <div style="background:#fff;border-radius:12px;padding:10px;border-left:3px solid #6366f1;border:1px solid #eee;border-left-width:3px;border-left-color:#6366f1;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+                  <div style="width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:700;">K</div>
+                  <div style="flex:1;"><div style="font-size:9px;font-weight:700;color:#111;">KimDev Studio</div><div style="font-size:7px;color:#aaa;">2h ago</div></div>
+                  <div style="font-size:7px;background:#eef2ff;color:#6366f1;border-radius:6px;padding:2px 6px;font-weight:700;">🆕 New Drop</div>
+                </div>
+                <div style="font-size:10px;font-weight:700;color:#111;margin-bottom:2px;">ResumeAI</div>
+                <div style="font-size:8px;color:#666;line-height:1.4;margin-bottom:6px;">Tailor your CV to any job in 60 seconds.</div>
+                <div style="background:#6366f1;border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">View App →</div>
+              </div>
+              <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid #eee;border-left:3px solid #8b5cf6;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+                  <div style="width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#0ea5e9,#10b981);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:700;">N</div>
+                  <div style="flex:1;"><div style="font-size:9px;font-weight:700;color:#111;">NovaTech Labs</div><div style="font-size:7px;color:#aaa;">Yesterday</div></div>
+                  <div style="font-size:7px;background:#f5f0ff;color:#8b5cf6;border-radius:6px;padding:2px 6px;font-weight:700;">🧪 Beta</div>
+                </div>
+                <div style="font-size:10px;font-weight:700;color:#111;margin-bottom:2px;">VoiceNote Pro</div>
+                <div style="font-size:8px;color:#666;line-height:1.4;margin-bottom:6px;">Auto-summarize your voice memos. Early testers needed.</div>
+                <div style="background:#8b5cf6;border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">Join Beta →</div>
+              </div>
+              <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid #eee;border-left:3px solid #f59e0b;opacity:0.75;">
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+                  <div style="width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:9px;color:white;font-weight:700;">S</div>
+                  <div style="flex:1;"><div style="font-size:9px;font-weight:700;color:#111;">ShipFast</div><div style="font-size:7px;color:#aaa;">3 days ago</div></div>
+                  <div style="font-size:7px;background:#fffbeb;color:#f59e0b;border-radius:6px;padding:2px 6px;font-weight:700;">🔄 Update</div>
+                </div>
+                <div style="font-size:10px;font-weight:700;color:#111;margin-bottom:2px;">LaunchKit v2</div>
+                <div style="font-size:8px;color:#666;line-height:1.4;margin-bottom:6px;">Notion integration + faster export now live.</div>
+                <div style="background:#f5f5f5;border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:600;color:#555;">See What's New →</div>
+              </div>
+            </div>
+          </div>
+          <div class="s-tab-bar" style="background:rgba(255,255,255,0.95);border-top:0.5px solid #eee;">
+            <div class="s-tab"><span class="s-tab-icon">🏠</span><span class="s-tab-label" style="color:#999;">Discover</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📦</span><span class="s-tab-label" style="color:#999;">Collections</span></div>
+            <div class="s-tab active"><span class="s-tab-icon">📬</span><span class="s-tab-label" style="color:#6366f1;">My Feed</span></div>
+            <div class="s-tab"><span class="s-tab-icon">👤</span><span class="s-tab-label" style="color:#999;">Profile</span></div>
+          </div>
+        </div>
+        <div class="home-indicator" style="background:rgba(0,0,0,0.2);"></div>
+      </div>
+      <div class="phone-label">C2 · My Feed</div>
+    </div>
+
+    <!-- C3: Collections -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#f5f5f7;">
+          <div class="dynamic-island" style="background:#000;"></div>
+          <div class="status-bar" style="color:#111;"><span class="status-time">9:41</span><div class="status-icons" style="color:#333;">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div style="background:#fff;padding:6px 14px 8px;border-bottom:0.5px solid #eee;">
+              <div style="font-size:14px;font-weight:800;color:#111;">📦 Collections</div>
+              <div style="font-size:8px;color:#999;">App bundles for specific goals</div>
+            </div>
+            <div style="padding:8px 10px;display:flex;flex-direction:column;gap:6px;height:calc(100% - 44px - 44px);overflow-y:auto;">
+              <div style="background:linear-gradient(135deg,#1e1e3f,#2d1b4e);border-radius:12px;padding:12px;border:1px solid rgba(99,102,241,0.3);">
+                <div style="font-size:18px;margin-bottom:5px;">🚀</div>
+                <div style="font-size:11px;font-weight:800;color:white;margin-bottom:2px;">Solo Founder Starter Pack</div>
+                <div style="font-size:8px;color:rgba(255,255,255,0.55);margin-bottom:8px;">5 apps · Launch your product faster</div>
+                <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:8px;">
+                  <div style="font-size:8px;color:rgba(255,255,255,0.7);display:flex;gap:5px;align-items:center;"><span style="font-size:10px;">✍️</span> CopyGen — AI landing page copy</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,0.7);display:flex;gap:5px;align-items:center;"><span style="font-size:10px;">🎨</span> LogoMaker AI — Brand identity</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,0.5);">+ 3 more apps</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.15);border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">View Collection →</div>
+              </div>
+              <div style="background:linear-gradient(135deg,#1a2e1e,#1b3d2d);border-radius:12px;padding:12px;border:1px solid rgba(16,185,129,0.3);">
+                <div style="font-size:18px;margin-bottom:5px;">✍️</div>
+                <div style="font-size:11px;font-weight:800;color:white;margin-bottom:2px;">Content Creator Toolkit</div>
+                <div style="font-size:8px;color:rgba(255,255,255,0.55);margin-bottom:8px;">4 apps · Script, edit, publish</div>
+                <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:8px;">
+                  <div style="font-size:8px;color:rgba(255,255,255,0.7);display:flex;gap:5px;align-items:center;"><span style="font-size:10px;">🎙️</span> VoiceBlog — Voice to content</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,0.7);display:flex;gap:5px;align-items:center;"><span style="font-size:10px;">✂️</span> ClipAI — Video clip maker</div>
+                  <div style="font-size:8px;color:rgba(255,255,255,0.5);">+ 2 more apps</div>
+                </div>
+                <div style="background:rgba(255,255,255,0.15);border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">View Collection →</div>
+              </div>
+              <div style="background:linear-gradient(135deg,#2e1a1a,#3d1b1b);border-radius:12px;padding:12px;border:1px solid rgba(239,68,68,0.3);">
+                <div style="font-size:18px;margin-bottom:5px;">🎙️</div>
+                <div style="font-size:11px;font-weight:800;color:white;margin-bottom:2px;">Podcast Production Kit</div>
+                <div style="font-size:8px;color:rgba(255,255,255,0.55);margin-bottom:6px;">3 apps · Record, transcribe, distribute</div>
+                <div style="background:rgba(255,255,255,0.15);border-radius:7px;padding:5px;text-align:center;font-size:8px;font-weight:700;color:white;">View Collection →</div>
+              </div>
+            </div>
+          </div>
+          <div class="s-tab-bar" style="background:rgba(255,255,255,0.95);border-top:0.5px solid #eee;">
+            <div class="s-tab"><span class="s-tab-icon">🏠</span><span class="s-tab-label" style="color:#999;">Discover</span></div>
+            <div class="s-tab active"><span class="s-tab-icon">📦</span><span class="s-tab-label" style="color:#6366f1;">Collections</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📬</span><span class="s-tab-label" style="color:#999;">My Feed</span></div>
+            <div class="s-tab"><span class="s-tab-icon">👤</span><span class="s-tab-label" style="color:#999;">Profile</span></div>
+          </div>
+        </div>
+        <div class="home-indicator" style="background:rgba(0,0,0,0.2);"></div>
+      </div>
+      <div class="phone-label">C3 · Collections</div>
+    </div>
+
+    <!-- C4: Profile -->
+    <div class="phone-wrapper">
+      <div class="phone">
+        <div class="phone-screen" style="background:#f5f5f7;">
+          <div class="dynamic-island" style="background:#000;"></div>
+          <div class="status-bar" style="color:#111;"><span class="status-time">9:41</span><div class="status-icons" style="color:#333;">▲▲▲ 🔋</div></div>
+          <div class="screen-content">
+            <div style="background:#fff;padding:6px 14px 8px;border-bottom:0.5px solid #eee;">
+              <div style="font-size:14px;font-weight:800;color:#111;">👤 Profile</div>
+            </div>
+            <div style="padding:8px 10px;display:flex;flex-direction:column;gap:7px;height:calc(100% - 44px - 44px);overflow-y:auto;">
+              <!-- User info -->
+              <div style="background:#fff;border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px;border:1px solid #eee;">
+                <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">J</div>
+                <div><div style="font-size:11px;font-weight:700;color:#111;">jisoo_k</div><div style="font-size:8px;color:#999;">Joined May 2026</div></div>
+              </div>
+              <!-- Boosted apps -->
+              <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid #eee;">
+                <div style="font-size:9px;font-weight:700;color:#999;margin-bottom:6px;">⬆ BOOSTED APPS (3)</div>
+                <div style="display:flex;flex-direction:column;gap:5px;">
+                  <div style="display:flex;align-items:center;gap:8px;"><div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:11px;">📄</div><div style="flex:1;font-size:9px;font-weight:600;color:#111;">ResumeAI</div><div style="font-size:8px;color:#aaa;">KimDev</div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#0ea5e9,#10b981);display:flex;align-items:center;justify-content:center;font-size:11px;">🎙️</div><div style="flex:1;font-size:9px;font-weight:600;color:#111;">VoiceNote Pro</div><div style="font-size:8px;color:#aaa;">NovaTech</div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-size:11px;">✍️</div><div style="flex:1;font-size:9px;font-weight:600;color:#111;">BlogAI</div><div style="font-size:8px;color:#aaa;">WriteSmart</div></div>
+                </div>
+              </div>
+              <!-- Favorite creators -->
+              <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid #eee;">
+                <div style="font-size:9px;font-weight:700;color:#999;margin-bottom:6px;">⭐ FAVORITE CREATORS (2)</div>
+                <div style="display:flex;flex-direction:column;gap:5px;">
+                  <div style="display:flex;align-items:center;gap:8px;"><div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:700;">K</div><div style="flex:1;"><div style="font-size:9px;font-weight:600;color:#111;">KimDev Studio</div><div style="font-size:7px;color:#aaa;">2 apps · 142 regulars</div></div><div style="font-size:8px;color:#ec4899;font-weight:600;">Regular ✓</div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><div style="width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#0ea5e9,#10b981);display:flex;align-items:center;justify-content:center;font-size:11px;color:white;font-weight:700;">N</div><div style="flex:1;"><div style="font-size:9px;font-weight:600;color:#111;">NovaTech Labs</div><div style="font-size:7px;color:#aaa;">3 apps · 89 regulars</div></div><div style="font-size:8px;color:#ec4899;font-weight:600;">Regular ✓</div></div>
+                </div>
+              </div>
+              <!-- Recent deliveries -->
+              <div style="background:#fff;border-radius:12px;padding:10px;border:1px solid #eee;">
+                <div style="font-size:9px;font-weight:700;color:#999;margin-bottom:6px;">🕐 RECENT DELIVERIES</div>
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                  <div style="font-size:8px;color:#555;background:#f5f5f5;border-radius:6px;padding:5px 8px;">"voice notes → blog post"</div>
+                  <div style="font-size:8px;color:#555;background:#f5f5f5;border-radius:6px;padding:5px 8px;">"resize images for Instagram"</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="s-tab-bar" style="background:rgba(255,255,255,0.95);border-top:0.5px solid #eee;">
+            <div class="s-tab"><span class="s-tab-icon">🏠</span><span class="s-tab-label" style="color:#999;">Discover</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📦</span><span class="s-tab-label" style="color:#999;">Collections</span></div>
+            <div class="s-tab"><span class="s-tab-icon">📬</span><span class="s-tab-label" style="color:#999;">My Feed</span></div>
+            <div class="s-tab active"><span class="s-tab-icon">👤</span><span class="s-tab-label" style="color:#6366f1;">Profile</span></div>
+          </div>
+        </div>
+        <div class="home-indicator" style="background:rgba(0,0,0,0.2);"></div>
+      </div>
+      <div class="phone-label">C4 · Profile</div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
