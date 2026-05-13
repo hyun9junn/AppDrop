@@ -1,15 +1,17 @@
+'use client'
 import Link from 'next/link'
 import type { Category } from '@/lib/types'
+import { useLocale } from '@/lib/i18n'
 
-const categories: { label: string; icon: string; slug: Category }[] = [
-  { label: 'Writing', icon: '✍️', slug: 'writing' },
-  { label: 'Images', icon: '🖼️', slug: 'images' },
-  { label: 'Audio', icon: '🎙️', slug: 'audio' },
-  { label: 'Video', icon: '🎬', slug: 'video' },
-  { label: 'Data', icon: '📊', slug: 'data' },
-  { label: 'Business', icon: '💼', slug: 'business' },
-  { label: 'Design', icon: '🎨', slug: 'design' },
-  { label: 'AI Tools', icon: '🤖', slug: 'ai-tools' },
+const categories: { key: string; icon: string; slug: Category }[] = [
+  { key: 'category.writing', icon: '✍️', slug: 'writing' },
+  { key: 'category.images', icon: '🖼️', slug: 'images' },
+  { key: 'category.audio', icon: '🎙️', slug: 'audio' },
+  { key: 'category.video', icon: '🎬', slug: 'video' },
+  { key: 'category.data', icon: '📊', slug: 'data' },
+  { key: 'category.business', icon: '💼', slug: 'business' },
+  { key: 'category.design', icon: '🎨', slug: 'design' },
+  { key: 'category.ai-tools', icon: '🤖', slug: 'ai-tools' },
 ]
 
 const bgMap: Record<Category, string> = {
@@ -24,6 +26,7 @@ const bgMap: Record<Category, string> = {
 }
 
 export default function CategoryGrid() {
+  const { t } = useLocale()
   return (
     <div className="bg-white rounded-2xl mx-4 mt-3 p-3">
       <div className="grid grid-cols-4 gap-2">
@@ -36,7 +39,7 @@ export default function CategoryGrid() {
             <div className={`w-10 h-10 ${bgMap[cat.slug]} rounded-xl flex items-center justify-center text-xl`}>
               {cat.icon}
             </div>
-            <span className="text-[9px] font-semibold text-gray-600">{cat.label}</span>
+            <span className="text-[9px] font-semibold text-gray-600">{t(cat.key as any)}</span>
           </Link>
         ))}
       </div>

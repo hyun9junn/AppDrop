@@ -1,17 +1,19 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
-const examples = [
-  'Turn my voice notes into a blog post',
-  'Resize images for Instagram without Photoshop',
-  'Transcribe a recorded meeting',
-  'Turn a spreadsheet into a chart',
-]
+import { useLocale } from '@/lib/i18n'
 
 export default function ProblemInput() {
   const [query, setQuery] = useState('')
   const router = useRouter()
+  const { t } = useLocale()
+
+  const examples = [
+    t('input.examples.0'),
+    t('input.examples.1'),
+    t('input.examples.2'),
+    t('input.examples.3'),
+  ]
 
   function handleSubmit(q: string) {
     if (!q.trim()) return
@@ -20,14 +22,14 @@ export default function ProblemInput() {
 
   return (
     <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-4 mx-4 mt-3">
-      <p className="text-white font-extrabold text-sm mb-1">What are you trying to do?</p>
-      <p className="text-white/70 text-[10px] mb-3">Describe your problem — we'll deliver the right apps</p>
+      <p className="text-white font-extrabold text-sm mb-1">{t('input.heading')}</p>
+      <p className="text-white/70 text-[10px] mb-3">{t('input.subtext')}</p>
       <div className="flex gap-2">
         <input
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSubmit(query)}
-          placeholder="e.g. I need to summarize a YouTube video..."
+          placeholder={t('input.placeholder')}
           className="flex-1 bg-white/20 text-white placeholder-white/50 rounded-xl px-3 py-2 text-xs outline-none"
         />
         <button

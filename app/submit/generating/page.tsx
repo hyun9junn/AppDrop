@@ -1,37 +1,36 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-
-const steps = [
-  'Reading your submission...',
-  'Writing description + tagline',
-  'Generating use cases',
-  'Rendering Story card',
-  'Writing social copy',
-  'Creating embeddings',
-]
+import { useLocale } from '@/lib/i18n'
 
 export default function GeneratingPage() {
   const router = useRouter()
+  const { t } = useLocale()
   const [step, setStep] = useState(0)
+
+  const steps = [
+    t('generating.step.0'),
+    t('generating.step.1'),
+    t('generating.step.2'),
+  ]
 
   useEffect(() => {
     if (step < steps.length - 1) {
-      const t = setTimeout(() => setStep(s => s + 1), 700)
-      return () => clearTimeout(t)
+      const timer = setTimeout(() => setStep(s => s + 1), 600)
+      return () => clearTimeout(timer)
     } else {
-      const t = setTimeout(() => router.push('/submit/preview'), 800)
-      return () => clearTimeout(t)
+      const timer = setTimeout(() => router.push('/submit/preview'), 500)
+      return () => clearTimeout(timer)
     }
-  }, [step, router])
+  }, [step, router, steps.length])
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-8 text-center">
       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-3xl mb-6 shadow-lg shadow-indigo-500/30">
         🤖
       </div>
-      <h2 className="text-white font-extrabold text-xl mb-1">Packaging your app...</h2>
-      <p className="text-gray-500 text-sm mb-8">AI is generating your full package</p>
+      <h2 className="text-white font-extrabold text-xl mb-1">{t('generating.title')}</h2>
+      <p className="text-gray-500 text-sm mb-8">{t('generating.subtitle')}</p>
       <div className="w-full max-w-xs flex flex-col gap-3 mb-6">
         {steps.map((s, i) => (
           <div key={s} className="flex items-center gap-3">
@@ -48,7 +47,6 @@ export default function GeneratingPage() {
           style={{ width: `${((step + 1) / steps.length) * 100}%` }}
         />
       </div>
-      <p className="text-gray-600 text-xs mt-3">~15 seconds</p>
     </div>
   )
 }
