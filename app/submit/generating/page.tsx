@@ -1,12 +1,15 @@
+// app/submit/generating/page.tsx
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { packageApp } from '@/lib/api'
 import { useLocale } from '@/lib/i18n'
 
 export default function GeneratingPage() {
   const router = useRouter()
   const { t } = useLocale()
   const [step, setStep] = useState(0)
+  const [error, setError] = useState<string | null>(null)
 
   const steps = [
     t('generating.step.0'),
@@ -14,15 +17,43 @@ export default function GeneratingPage() {
     t('generating.step.2'),
   ]
 
+  // Animate steps independently of the API call
   useEffect(() => {
-    if (step < steps.length - 1) {
-      const timer = setTimeout(() => setStep(s => s + 1), 600)
-      return () => clearTimeout(timer)
-    } else {
-      const timer = setTimeout(() => router.push('/submit/preview'), 500)
-      return () => clearTimeout(timer)
-    }
-  }, [step, router, steps.length])
+    if (step >= steps.length - 1) return
+    const timer = setTimeout(() => setStep(s => s + 1), 4000)
+    return () => clearTimeout(timer)
+  }, [step, steps.length])
+
+  // Make the real API call
+  useEffect(() => {
+    const raw = sessionStorage.getItem('submitForm')
+    if (!raw) { router.push('/submit'); return }
+
+    packageApp(JSON.parse(raw))
+      .then(app => {
+        sessionStorage.setItem('generatedApp', JSON.stringify(app))
+        router.push('/submit/preview')
+      })
+      .catch(err => {
+        setError(err.message || 'Generation failed. Please try again.')
+      })
+  }, [router])
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-8 text-center">
+        <div className="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center text-3xl mb-6">⚠️</div>
+        <h2 className="text-white font-extrabold text-xl mb-2">Generation failed</h2>
+        <p className="text-gray-400 text-sm mb-6">{error}</p>
+        <button
+          onClick={() => router.push('/submit')}
+          className="px-6 py-3 bg-brand text-white font-bold rounded-xl text-sm"
+        >
+          Try again
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-8 text-center">
