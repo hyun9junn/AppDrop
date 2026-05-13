@@ -7,7 +7,13 @@
 
 ## Overview
 
-AppDrop's frontend MVP is complete with static mock data. This spec covers replacing all mocked data with real backend functionality: AI-powered app packaging, semantic delivery engine, and persistent storage.
+AppDrop is an **AI-era app packaging and delivery platform** — not a social network or app directory. Its three layers are:
+
+- **Layer A — Packaging:** Developer submits → AI generates full app package
+- **Layer B — Delivery:** User describes problem → AI delivers matching apps as Story cards
+- **Layer C — Story-driven Growth & Loyalty:** Story rings, boosting (lightweight endorsement), favorite creators, subscription feed
+
+This spec covers replacing all mocked data with real backend functionality: AI-powered app packaging, semantic delivery engine, and persistent storage.
 
 **Stack:**
 - Next.js App Router API routes (server-side, same repo)
@@ -17,14 +23,24 @@ AppDrop's frontend MVP is complete with static mock data. This spec covers repla
 
 ---
 
-## 1. Database Schema (Supabase)
+## 1. Packaging Input Model
+
+**Vision:** URL-first app packaging — a developer drops a link and gets a full package.
+
+**MVP:** URL + guided form. The form is the primary source of truth for AI packaging. The app link is stored as the destination URL (where users are sent when they tap "Try App") but is **not scraped or analyzed** by the AI. Quality of the generated package depends entirely on the quality of the developer's form answers.
+
+URL scraping is a post-MVP improvement. For now, the Claude prompt must not imply that the AI understands the app from the URL.
+
+---
+
+## 2. Database Schema (Supabase)
 
 ### `apps`
 ```sql
-id          text PRIMARY KEY,
+id          text PRIMARY KEY,   -- title slug + 4-char random suffix, e.g. "pdf-helper-a8x3"
 title       text NOT NULL,
 tagline     text NOT NULL,
-link        text NOT NULL,
+link        text NOT NULL,      -- destination URL (not scraped)
 creator_id  text REFERENCES creators(id),
 description text NOT NULL,
 use_cases   text[] NOT NULL,
@@ -42,7 +58,7 @@ created_at  timestamptz NOT NULL DEFAULT now()
 
 ### `creators`
 ```sql
-id            text PRIMARY KEY,
+id            text PRIMARY KEY,   -- handle slug + 4-char random suffix, e.g. "kimdev-x9q2"
 name          text NOT NULL,
 bio           text NOT NULL DEFAULT '',
 avatar        text NOT NULL DEFAULT '',
@@ -52,6 +68,8 @@ created_at    timestamptz NOT NULL DEFAULT now()
 ```
 
 ### `boosts`
+One row per device+app pair. MVP framing: **a boost is a lightweight user endorsement**, not a points economy. One boost per user per app. Future versions may add boost credits, earned boosts, or paid promotion.
+
 ```sql
 device_id  text NOT NULL,
 app_id     text REFERENCES apps(id) ON DELETE CASCADE,
@@ -73,12 +91,16 @@ id          text PRIMARY KEY,
 title       text NOT NULL,
 description text NOT NULL,
 emoji       text NOT NULL,
-app_ids     text[] NOT NULL DEFAULT '{}',
+app_ids     text[] NOT NULL DEFAULT '{}',  -- ordered array; MVP-appropriate
 curated_by  text NOT NULL DEFAULT 'AppDrop',
 updated_at  timestamptz NOT NULL DEFAULT now()
 ```
 
+> **Future schema note:** If collections become a core surface, migrate `app_ids text[]` to a join table `collection_apps(collection_id, app_id, position int)` to support ordering and app roles within each collection.
+
 ### `feed_items`
+The feed is **chronological, not algorithmic**. It shows updates from favorite creators only — not a general social feed.
+
 ```sql
 id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
 creator_id text REFERENCES creators(id) ON DELETE CASCADE,
@@ -93,7 +115,7 @@ A Postgres trigger increments `apps.boost_count` on `INSERT` into `boosts` and d
 
 ---
 
-## 2. API Routes
+## 3. API Routes
 
 All routes live under `app/api/`. All accept and return JSON.
 
@@ -101,22 +123,22 @@ All routes live under `app/api/`. All accept and return JSON.
 **Input:**
 ```ts
 {
-  link: string
+  link: string        // destination URL only — not scraped
   problem: string
   audience: string
   features: string
   access: AccessType[]
   pricing: Pricing
   tags: string
-  creatorName: string  // new field added to submit form (Q0: "Your name or handle")
+  creatorName: string  // added to submit form as Q0: "Your name or handle"
 }
 ```
 **Process:**
-1. Call Claude with the 7 form answers (structured prompt, single round trip)
+1. Call Claude with the form answers as the sole AI input (structured prompt, single round trip)
 2. Parse and validate the returned JSON
-3. Assign gradient theme based on inferred category
-4. Generate `id` as a URL-safe slug from the title
-5. Upsert creator row (id derived from creatorName slug)
+3. Assign gradient theme from the `category` Claude returns
+4. Generate `id` as `{title-slug}-{4-char-random}` (e.g. `pdf-helper-a8x3`)
+5. Upsert creator row with id `{handle-slug}-{4-char-random}` (only created once per handle — check for existing by name match)
 6. Insert app row with `status: 'published'`
 7. Insert `feed_item` of type `'drop'`
 
@@ -132,7 +154,7 @@ All routes live under `app/api/`. All accept and return JSON.
 { query: string }
 ```
 **Process:**
-1. Fetch all published apps from Supabase (id, title, tagline, description, use_cases, tags, category only)
+1. Fetch all published apps from Supabase (id, title, tagline, description, use_cases, tags, category only — not the full row)
 2. Call Claude with the app catalog + user query
 3. Parse returned JSON array of app IDs
 4. Fetch full app rows for returned IDs
@@ -161,7 +183,7 @@ Fetches all published apps from Supabase. Optional category filter. Orders by `c
 ### `POST /api/boost`
 **Input:** `{ deviceId: string, appId: string }`
 
-Inserts or deletes from `boosts` (toggle). The Postgres trigger handles `boost_count`. Returns current state after the operation.
+MVP: boost = lightweight endorsement. Inserts or deletes from `boosts` (toggle). The Postgres trigger handles `boost_count`. Returns current state after the operation.
 
 **Output:** `{ boosted: boolean, boostCount: number }`
 
@@ -170,7 +192,7 @@ Inserts or deletes from `boosts` (toggle). The Postgres trigger handles `boost_c
 ### `POST /api/favorite`
 **Input:** `{ deviceId: string, creatorId: string }`
 
-Inserts or deletes from `favorites` (toggle).
+Inserts or deletes from `favorites` (toggle). Favoriting a creator subscribes the device to their feed updates — closer to a newsletter subscription than social following.
 
 **Output:** `{ favorited: boolean }`
 
@@ -194,23 +216,28 @@ Fetches all collections from Supabase. Joins full app rows for each collection's
 
 ---
 
-## 3. AI Packaging Pipeline
+## 4. AI Packaging Pipeline
 
 ### Claude Prompt
-Single structured prompt, one round trip. System message instructs Claude to return only valid JSON.
+Single structured prompt, one round trip. The URL is passed for reference only — the AI generates the package from the developer's form answers.
 
 **System:**
 ```
 You are an app packaging assistant for AppDrop, a platform that helps
 developers present their apps to non-technical users.
 
-Given the developer's answers, generate a complete app package.
+You will receive answers a developer filled out about their app.
+Generate a complete app package based on those answers.
+
+Important: do not attempt to infer anything from the app URL — it is
+provided for reference only. Generate everything from the developer's answers.
+
 Output ONLY valid JSON — no markdown, no explanation, no code fences.
 ```
 
 **User message structure:**
 ```
-App URL: {link}
+App URL (destination only, not analyzed): {link}
 Problem it solves: {problem}
 Target user: {audience}
 Core features: {features}
@@ -249,7 +276,7 @@ Return this JSON shape exactly:
 
 ---
 
-## 4. Delivery Engine
+## 5. Delivery Engine
 
 ### Claude Prompt
 **System:**
@@ -277,7 +304,7 @@ This approach works for up to ~300 apps before prompt size becomes a concern. At
 
 ---
 
-## 5. Frontend Wiring
+## 6. Frontend Wiring
 
 ### New Shared Utilities
 
@@ -311,6 +338,7 @@ export function useDeviceId(): string
 
 | Page | Change |
 |---|---|
+| `/submit` | Adds `creatorName` field (Q0); stores all fields in sessionStorage on submit |
 | `/submit/generating` | Reads sessionStorage, calls `packageApp()`, handles error state |
 | `/submit/preview` | Reads generated app from sessionStorage instead of `apps[0]` |
 | `/results` | Calls `deliverApps(query)`, shows skeleton while loading |
@@ -328,7 +356,7 @@ For boost and favorite toggles:
 
 ---
 
-## 6. Environment Variables
+## 7. Environment Variables
 
 ```env
 ANTHROPIC_API_KEY=...
@@ -339,11 +367,14 @@ NEXT_PUBLIC_SUPABASE_URL=... # public (for future client-side reads if needed)
 
 ---
 
-## 7. Out of Scope
+## 8. Out of Scope
 
 - User authentication (using anonymous device ID)
-- App embedding / vector search (Claude does direct matching)
+- URL scraping / auto-fill from app link (form is the AI input source)
+- App embedding / vector search (Claude does direct matching for MVP)
 - Developer dashboard / analytics
 - Collection editing UI (collections seeded manually in Supabase)
 - Feed item composer UI (feed items created automatically on publish)
 - Rate limiting on API routes
+- Algorithmic feed (My Feed is chronological only)
+- Boost credits, earned boosts, or paid promotion (boost = lightweight endorsement in MVP)
