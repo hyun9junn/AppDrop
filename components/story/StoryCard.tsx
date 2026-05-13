@@ -1,8 +1,11 @@
 'use client'
+import { useState } from 'react'
 import Link from 'next/link'
 import type { App } from '@/lib/types'
 import { gradientMap } from '@/lib/types'
 import { useLocale } from '@/lib/i18n'
+import { useDeviceId } from '@/hooks/useDeviceId'
+import { toggleBoost } from '@/lib/api'
 
 interface StoryCardProps {
   app: App
@@ -13,6 +16,25 @@ export default function StoryCard({ app, showActions = true }: StoryCardProps) {
   const { t, localizeApp } = useLocale()
   const a = localizeApp(app)
   const gradient = gradientMap[a.storyCard.gradientTheme]
+  const deviceId = useDeviceId()
+  const [boostCount, setBoostCount] = useState(a.boostCount)
+  const [boosted, setBoosted] = useState(false)
+
+  async function handleBoost() {
+    if (!deviceId) return
+    const prev = { boosted, boostCount }
+    setBoosted(b => !b)
+    setBoostCount(c => boosted ? c - 1 : c + 1)
+    try {
+      const result = await toggleBoost(deviceId, app.id)
+      setBoosted(result.boosted)
+      setBoostCount(result.boostCount)
+    } catch {
+      setBoosted(prev.boosted)
+      setBoostCount(prev.boostCount)
+    }
+  }
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
       <div className={`bg-gradient-to-br ${gradient} p-5 text-center text-white`}>
@@ -29,7 +51,7 @@ export default function StoryCard({ app, showActions = true }: StoryCardProps) {
             <p className="font-bold text-gray-900 text-sm">{a.title}</p>
             <p className="text-[10px] text-gray-400">{a.pricing} · {a.accessType[0]}</p>
           </div>
-          <p className="text-xs text-brand font-bold">⬆ {a.boostCount}</p>
+          <p className="text-xs text-brand font-bold">⬆ {boostCount}</p>
         </div>
         <ul className="mb-3 space-y-1">
           {a.storyCard.features.map(f => (
@@ -47,7 +69,12 @@ export default function StoryCard({ app, showActions = true }: StoryCardProps) {
             >
               {t('card.try')} {a.title} →
             </Link>
-            <button className="flex-1 bg-gray-100 text-gray-500 rounded-xl py-2 text-xs font-medium">{t('card.boost')}</button>
+            <button
+              onClick={handleBoost}
+              className={`flex-1 rounded-xl py-2 text-xs font-medium transition-colors ${boosted ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500'}`}
+            >
+              {t('card.boost')}
+            </button>
             <button className="flex-1 bg-gray-100 text-gray-500 rounded-xl py-2 text-xs font-medium">⭐</button>
           </div>
         )}

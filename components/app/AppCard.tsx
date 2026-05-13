@@ -1,12 +1,34 @@
 'use client'
+import { useState } from 'react'
 import Link from 'next/link'
 import type { App } from '@/lib/types'
 import StoryCardMini from '@/components/story/StoryCardMini'
 import { useLocale } from '@/lib/i18n'
+import { useDeviceId } from '@/hooks/useDeviceId'
+import { toggleBoost } from '@/lib/api'
 
 export default function AppCard({ app }: { app: App }) {
   const { t, localizeApp } = useLocale()
   const a = localizeApp(app)
+  const deviceId = useDeviceId()
+  const [boostCount, setBoostCount] = useState(a.boostCount)
+  const [boosted, setBoosted] = useState(false)
+
+  async function handleBoost() {
+    if (!deviceId) return
+    const prev = { boosted, boostCount }
+    setBoosted(b => !b)
+    setBoostCount(c => boosted ? c - 1 : c + 1)
+    try {
+      const result = await toggleBoost(deviceId, app.id)
+      setBoosted(result.boosted)
+      setBoostCount(result.boostCount)
+    } catch {
+      setBoosted(prev.boosted)
+      setBoostCount(prev.boostCount)
+    }
+  }
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
       <StoryCardMini app={app} />
@@ -16,7 +38,7 @@ export default function AppCard({ app }: { app: App }) {
             <p className="font-bold text-gray-900 text-sm">{a.title}</p>
             <p className="text-[10px] text-gray-400">{a.tagline}</p>
           </div>
-          <p className="text-xs text-brand font-bold">⬆ {a.boostCount}</p>
+          <p className="text-xs text-brand font-bold">⬆ {boostCount}</p>
         </div>
         <div className="flex gap-2 mt-2">
           <Link
@@ -26,7 +48,12 @@ export default function AppCard({ app }: { app: App }) {
           >
             {t('app.try')}
           </Link>
-          <button className="flex-1 bg-gray-100 text-gray-500 rounded-xl py-1.5 text-xs">{t('app.boost')}</button>
+          <button
+            onClick={handleBoost}
+            className={`flex-1 rounded-xl py-1.5 text-xs font-semibold transition-colors ${boosted ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500'}`}
+          >
+            {t('app.boost')}
+          </button>
           <button className="flex-1 bg-gray-100 text-gray-500 rounded-xl py-1.5 text-xs">⭐</button>
         </div>
       </div>
