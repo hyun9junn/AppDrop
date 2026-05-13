@@ -1,10 +1,19 @@
+// app/collections/page.tsx
 'use client'
-import { collections } from '@/lib/mock-data/collections'
+import { useEffect, useState } from 'react'
+import { fetchCollections } from '@/lib/api'
+import type { Collection } from '@/lib/types'
 import CollectionCard from '@/components/collection/CollectionCard'
 import { useLocale } from '@/lib/i18n'
 
 export default function CollectionsPage() {
   const { t, localizeCollection } = useLocale()
+  const [collections, setCollections] = useState<Collection[]>([])
+
+  useEffect(() => {
+    fetchCollections().then(setCollections).catch(() => {})
+  }, [])
+
   return (
     <div className="pb-20 bg-gray-50 min-h-screen">
       <div className="bg-white px-4 pt-3 pb-3 border-b border-gray-100">
