@@ -1,3 +1,4 @@
+// app/submit/page.tsx
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -14,6 +15,7 @@ const pricingOptions: Pricing[] = ['free', 'freemium', 'paid']
 export default function SubmitPage() {
   const router = useRouter()
   const { t } = useLocale()
+  const [creatorName, setCreatorName] = useState('')
   const [link, setLink] = useState('')
   const [problem, setProblem] = useState('')
   const [audience, setAudience] = useState('')
@@ -27,7 +29,10 @@ export default function SubmitPage() {
   }
 
   function handleSubmit() {
-    if (!link || !problem || !audience || !features || access.length === 0 || !pricing) return
+    if (!creatorName || !link || !problem || !audience || !features || access.length === 0 || !pricing) return
+    sessionStorage.setItem('submitForm', JSON.stringify({
+      creatorName, link, problem, audience, features, access, pricing, tags,
+    }))
     router.push('/submit/generating')
   }
 
@@ -35,6 +40,10 @@ export default function SubmitPage() {
     <div className="pb-10 min-h-screen bg-gray-950">
       <TopBar title={t('submit.title')} />
       <div className="p-4 flex flex-col gap-5">
+        <div>
+          <label className="text-[10px] font-bold text-indigo-400 uppercase tracking-wide block mb-1.5">Your name or handle</label>
+          <input value={creatorName} onChange={e => setCreatorName(e.target.value)} placeholder="e.g. KimDev Studio" className="w-full bg-gray-800 text-white rounded-xl px-3 py-2.5 text-sm outline-none border border-gray-700 placeholder-gray-600" />
+        </div>
         <div>
           <label className="text-[10px] font-bold text-indigo-400 uppercase tracking-wide block mb-1.5">{t('submit.q1')}</label>
           <input value={link} onChange={e => setLink(e.target.value)} placeholder={t('submit.q1_ph')} className="w-full bg-gray-800 text-white rounded-xl px-3 py-2.5 text-sm outline-none border border-gray-700 placeholder-gray-600" />
@@ -55,11 +64,8 @@ export default function SubmitPage() {
           <label className="text-[10px] font-bold text-indigo-400 uppercase tracking-wide block mb-1.5">{t('submit.q5')}</label>
           <div className="flex flex-wrap gap-2">
             {accessOptions.map(opt => (
-              <button
-                key={opt}
-                onClick={() => toggleAccess(opt)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${access.includes(opt) ? 'bg-brand text-white' : 'bg-gray-800 text-gray-400 border border-gray-700'}`}
-              >
+              <button key={opt} onClick={() => toggleAccess(opt)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${access.includes(opt) ? 'bg-brand text-white' : 'bg-gray-800 text-gray-400 border border-gray-700'}`}>
                 {accessLabels[opt]}
               </button>
             ))}
@@ -69,11 +75,8 @@ export default function SubmitPage() {
           <label className="text-[10px] font-bold text-indigo-400 uppercase tracking-wide block mb-1.5">{t('submit.q6')}</label>
           <div className="flex gap-2">
             {pricingOptions.map(opt => (
-              <button
-                key={opt}
-                onClick={() => setPricing(opt)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold capitalize transition-colors ${pricing === opt ? 'bg-brand text-white' : 'bg-gray-800 text-gray-400 border border-gray-700'}`}
-              >
+              <button key={opt} onClick={() => setPricing(opt)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold capitalize transition-colors ${pricing === opt ? 'bg-brand text-white' : 'bg-gray-800 text-gray-400 border border-gray-700'}`}>
                 {opt}
               </button>
             ))}
