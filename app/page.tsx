@@ -1,17 +1,27 @@
+// app/page.tsx
 'use client'
+import { useEffect, useState } from 'react'
 import TopBar from '@/components/layout/TopBar'
 import StoryRing from '@/components/story/StoryRing'
 import ProblemInput from '@/components/discover/ProblemInput'
 import CategoryGrid from '@/components/discover/CategoryGrid'
 import CollectionCard from '@/components/collection/CollectionCard'
 import AppCard from '@/components/app/AppCard'
-import { apps } from '@/lib/mock-data/apps'
-import { collections } from '@/lib/mock-data/collections'
+import { fetchApps, fetchCollections } from '@/lib/api'
+import type { App, Collection } from '@/lib/types'
 import Link from 'next/link'
 import { useLocale } from '@/lib/i18n'
 
 export default function DiscoverPage() {
   const { t, localizeCollection } = useLocale()
+  const [apps, setApps] = useState<App[]>([])
+  const [collections, setCollections] = useState<Collection[]>([])
+
+  useEffect(() => {
+    fetchApps().then(setApps).catch(() => {})
+    fetchCollections().then(setCollections).catch(() => {})
+  }, [])
+
   const newApps = apps.filter(a => a.isNew)
   const featuredApps = [...apps].sort((a, b) => b.boostCount - a.boostCount)
 
@@ -26,16 +36,13 @@ export default function DiscoverPage() {
           </div>
         }
       />
-
       <div className="bg-white border-b border-gray-100 px-4 py-3 flex gap-4 overflow-x-auto">
         {featuredApps.slice(0, 6).map((app, i) => (
           <StoryRing key={app.id} app={app} seen={i > 2} />
         ))}
       </div>
-
       <ProblemInput />
       <CategoryGrid />
-
       <div className="px-4 mt-4">
         <div className="flex items-center justify-between mb-2">
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">{t('home.featured_collections')}</p>
@@ -49,7 +56,6 @@ export default function DiscoverPage() {
           ))}
         </div>
       </div>
-
       <div className="px-4 mt-4">
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">{t('home.new_drops')}</p>
         <div className="flex flex-col gap-3">
