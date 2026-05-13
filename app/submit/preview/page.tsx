@@ -1,13 +1,25 @@
+// app/submit/preview/page.tsx
 'use client'
-import { apps } from '@/lib/mock-data/apps'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import TopBar from '@/components/layout/TopBar'
 import StoryCard from '@/components/story/StoryCard'
 import Link from 'next/link'
+import type { App } from '@/lib/types'
 import { useLocale } from '@/lib/i18n'
 
 export default function PreviewPage() {
-  const { t, localizeApp } = useLocale()
-  const app = localizeApp(apps[0])
+  const router = useRouter()
+  const { t } = useLocale()
+  const [app, setApp] = useState<App | null>(null)
+
+  useEffect(() => {
+    const raw = sessionStorage.getItem('generatedApp')
+    if (!raw) { router.push('/submit'); return }
+    setApp(JSON.parse(raw))
+  }, [router])
+
+  if (!app) return null
 
   return (
     <div className="pb-10 bg-gray-50 min-h-screen">
@@ -23,7 +35,7 @@ export default function PreviewPage() {
 
         <div>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">{t('preview.story_card')}</p>
-          <StoryCard app={apps[0]} showActions={false} />
+          <StoryCard app={app} showActions={false} />
         </div>
 
         <div>
