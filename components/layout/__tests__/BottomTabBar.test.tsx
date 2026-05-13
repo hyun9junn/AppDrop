@@ -1,9 +1,21 @@
 import { render, screen } from '@testing-library/react'
 import BottomTabBar from '../BottomTabBar'
 
-// Mock usePathname
 jest.mock('next/navigation', () => ({
   usePathname: () => '/',
+}))
+
+jest.mock('@/lib/i18n', () => ({
+  useLocale: () => ({
+    locale: 'en',
+    setLocale: () => {},
+    t: (key: string) => ({
+      'nav.discover': 'Discover',
+      'nav.collections': 'Collections',
+      'nav.feed': 'My Feed',
+      'nav.profile': 'Profile',
+    }[key] ?? key),
+  }),
 }))
 
 test('renders all four tabs', () => {

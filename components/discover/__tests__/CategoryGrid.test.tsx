@@ -1,6 +1,21 @@
 import { render, screen } from '@testing-library/react'
 import CategoryGrid from '../CategoryGrid'
 
+jest.mock('@/lib/i18n', () => ({
+  useLocale: () => ({
+    t: (key: string) => ({
+      'category.writing': 'Writing',
+      'category.images': 'Images',
+      'category.audio': 'Audio',
+      'category.video': 'Video',
+      'category.data': 'Data',
+      'category.business': 'Business',
+      'category.design': 'Design',
+      'category.ai-tools': 'AI Tools',
+    }[key] ?? key),
+  }),
+}))
+
 test('renders all 8 categories', () => {
   render(<CategoryGrid />)
   expect(screen.getByText('Writing')).toBeInTheDocument()
