@@ -5,7 +5,7 @@ import type { App } from '@/lib/types'
 import StoryCardMini from '@/components/story/StoryCardMini'
 import { useLocale } from '@/lib/i18n'
 import { useDeviceId } from '@/hooks/useDeviceId'
-import { toggleBoost } from '@/lib/api'
+import { toggleBoost, toggleFavorite } from '@/lib/api'
 
 export default function AppCard({ app }: { app: App }) {
   const { t, localizeApp } = useLocale()
@@ -13,6 +13,7 @@ export default function AppCard({ app }: { app: App }) {
   const deviceId = useDeviceId()
   const [boostCount, setBoostCount] = useState(a.boostCount)
   const [boosted, setBoosted] = useState(false)
+  const [favorited, setFavorited] = useState(false)
 
   async function handleBoost() {
     if (!deviceId) return
@@ -26,6 +27,18 @@ export default function AppCard({ app }: { app: App }) {
     } catch {
       setBoosted(prev.boosted)
       setBoostCount(prev.boostCount)
+    }
+  }
+
+  async function handleFavorite() {
+    if (!deviceId) return
+    const prev = favorited
+    setFavorited(f => !f)
+    try {
+      const result = await toggleFavorite(deviceId, app.creatorId)
+      setFavorited(result.favorited)
+    } catch {
+      setFavorited(prev)
     }
   }
 
@@ -54,7 +67,12 @@ export default function AppCard({ app }: { app: App }) {
           >
             {t('app.boost')}
           </button>
-          <button className="flex-1 bg-gray-100 text-gray-500 rounded-xl py-1.5 text-xs">⭐</button>
+          <button
+            onClick={handleFavorite}
+            className={`flex-1 rounded-xl py-1.5 text-xs transition-colors ${favorited ? 'bg-yellow-400 text-white' : 'bg-gray-100 text-gray-500'}`}
+          >
+            ⭐
+          </button>
         </div>
       </div>
     </div>
