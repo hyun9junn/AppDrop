@@ -61,6 +61,12 @@ export default function AppCard({ app }: { app: App }) {
           >
             {t('app.try')}
           </Link>
+          <Link
+            href={`/reel/${app.id}`}
+            className="flex-1 bg-gray-100 text-gray-700 rounded-xl py-1.5 text-center text-xs font-semibold"
+          >
+            {t('reel.watch')}
+          </Link>
           <button
             onClick={handleBoost}
             className={`flex-1 rounded-xl py-1.5 text-xs font-semibold transition-colors ${boosted ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500'}`}
