@@ -23,7 +23,8 @@ export default function ReelViewer({ apps, creators, initialAppId }: ReelViewerP
   const initialIndex = initialAppId ? apps.findIndex(a => a.id === initialAppId) : 0
   const startIndex = initialIndex >= 0 ? initialIndex : 0
   const { currentIndex, next, prev } = useReelFeed(apps.length - startIndex)
-  const app = localizeApp(apps[startIndex + currentIndex])
+  const safeIndex = Math.min(startIndex + currentIndex, apps.length - 1)
+  const app = localizeApp(apps[safeIndex])
   const creator = creators.find(c => c.id === app.creatorId)
   const gradient = gradientMap[app.storyCard.gradientTheme]
   const [boostCount, setBoostCount] = useState(app.boostCount)
@@ -36,7 +37,7 @@ export default function ReelViewer({ apps, creators, initialAppId }: ReelViewerP
     setBoostCount(app.boostCount)
     setBoosted(false)
     setFavorited(false)
-    setLoopKey(0)
+    setLoopKey(k => k + 1)
   }, [app.id])
 
   useEffect(() => {
@@ -58,8 +59,9 @@ export default function ReelViewer({ apps, creators, initialAppId }: ReelViewerP
   async function handleBoost() {
     if (!deviceId) return
     const prevState = { boosted, boostCount }
-    setBoosted(b => !b)
-    setBoostCount(c => boosted ? c - 1 : c + 1)
+    const newBoosted = !boosted
+    setBoosted(newBoosted)
+    setBoostCount(c => newBoosted ? c + 1 : c - 1)
     try {
       const result = await toggleBoost(deviceId, app.id)
       setBoosted(result.boosted)
