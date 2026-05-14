@@ -649,3 +649,53 @@ AppDrop은 새로 출발하는 AI·웹 서비스를 포장하고,
 AppDrop
 AI·웹 서비스를 포장하고, 필요한 사용자에게 배달합니다.
 ```
+
+---
+
+# 실제 녹화용 TTS 섹션 기록
+
+아래는 `recordings/short-video/appdrop-short-video-calm-sections-tts.mp4` 생성에 사용한 실제 섹션별 TTS 대본과 타임라인입니다.
+
+## TTS 생성 조건
+
+- 모델: Gemini TTS
+- 음성: `Orus`
+- 샘플레이트: `24000Hz`
+- 톤: 남성, 차분한 뉴스/서비스 안내형
+- 방식: 전체 대본을 한 번에 생성하지 않고, 섹션별 WAV를 생성한 뒤 이어붙임
+
+## 섹션별 대본
+
+| 파일 | 화면 섹션 | 길이 | 대본 |
+| --- | --- | ---: | --- |
+| `00-opening.wav` | `opening` | 5.40초 | 요즘은 AI 덕분에 누구나 앱과 웹서비스를 만들 수 있습니다. |
+| `01-problem.wav` | `problem` | 4.52초 | 하지만 만든 서비스를 알리는 일은 여전히 어렵습니다. |
+| `02-submit.wav` | `submit` | 7.08초 | AppDrop은 창업자와 작은 팀이 만든 서비스를 AI가 자동으로 포장해주는 플랫폼입니다. |
+| `03-package.wav` | `package` → `assets` | 8.64초 | 서비스 링크만 입력하면 소개 문구, 태그, 앱 카드, 랜딩 이미지, 숏폼 홍보물이 생성됩니다. |
+| `04-home.wav` | `home` | 3.00초 | 소비자는 앱 이름을 몰라도 됩니다. |
+| `05-need.wav` | `need` | 2.28초 | 자신의 문제만 입력하면, |
+| `06-match.wav` | `match` | 3.96초 | AppDrop이 필요한 서비스를 배달하듯 추천합니다. |
+| `07-growth.wav` | `closing` | 7.96초 | AppDrop은 새로 출발하는 AI·웹 서비스가 더 쉽게 발견되고 성장하도록 돕습니다. |
+
+## 실제 화면 타임라인
+
+`03-package.wav`는 하나의 음성이지만, 내용상 `소개 문구, 태그, 앱 카드`는 `package` 화면에서 보여주고, `랜딩 이미지, 숏폼 홍보물`은 `assets` 화면에서 보여주도록 화면 섹션만 중간에 전환합니다.
+
+| 시간 | 화면 섹션 | 대응 TTS |
+| ---: | --- | --- |
+| 0.00–5.40초 | `opening` | `00-opening.wav` |
+| 5.40–9.92초 | `problem` | `01-problem.wav` |
+| 9.92–17.00초 | `submit` | `02-submit.wav` |
+| 17.00–22.48초 | `package` | `03-package.wav` 전반부 |
+| 22.48–25.64초 | `assets` | `03-package.wav` 후반부 |
+| 25.64–28.64초 | `home` | `04-home.wav` |
+| 28.64–30.92초 | `need` | `05-need.wav` |
+| 30.92–34.88초 | `match` | `06-match.wav` |
+| 34.88–42.84초 | `closing` | `07-growth.wav` |
+| 42.84–44.34초 | `closing` | 무음 로고 홀드 |
+
+## 산출물
+
+- 섹션별 WAV: `recordings/short-video/audio/calm-sections/`
+- 이어붙인 WAV: `recordings/short-video/audio/appdrop-narration-calm-sections.wav`
+- 최종 MP4: `recordings/short-video/appdrop-short-video-calm-sections-tts.mp4`

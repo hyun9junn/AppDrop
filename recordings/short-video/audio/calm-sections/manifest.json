@@ -1,0 +1,54 @@
+{
+  "voiceName": "Orus",
+  "sampleRate": 24000,
+  "sections": [
+    {
+      "file": "00-opening.wav",
+      "scene": "opening",
+      "text": "요즘은 AI 덕분에 누구나 앱과 웹서비스를 만들 수 있습니다.",
+      "duration": 5.4
+    },
+    {
+      "file": "01-problem.wav",
+      "scene": "problem",
+      "text": "하지만 만든 서비스를 알리는 일은 여전히 어렵습니다.",
+      "duration": 4.52
+    },
+    {
+      "file": "02-submit.wav",
+      "scene": "submit",
+      "text": "AppDrop은 창업자와 작은 팀이 만든 서비스를 AI가 자동으로 포장해주는 플랫폼입니다.",
+      "duration": 7.08
+    },
+    {
+      "file": "03-package.wav",
+      "scene": "package",
+      "text": "서비스 링크만 입력하면 소개 문구, 태그, 앱 카드, 랜딩 이미지, 숏폼 홍보물이 생성됩니다.",
+      "duration": 8.64
+    },
+    {
+      "file": "04-home.wav",
+      "scene": "home",
+      "text": "소비자는 앱 이름을 몰라도 됩니다.",
+      "duration": 3
+    },
+    {
+      "file": "05-need.wav",
+      "scene": "need",
+      "text": "자신의 문제만 입력하면,",
+      "duration": 2.28
+    },
+    {
+      "file": "06-match.wav",
+      "scene": "match",
+      "text": "AppDrop이 필요한 서비스를 배달하듯 추천합니다.",
+      "duration": 3.96
+    },
+    {
+      "file": "07-growth.wav",
+      "scene": "match",
+      "text": "AppDrop은 새로 출발하는 AI·웹 서비스가 더 쉽게 발견되고 성장하도록 돕습니다.",
+      "duration": 7.96
+    }
+  ]
+}

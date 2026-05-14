@@ -3,18 +3,18 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-const TOTAL_SECONDS = 25
+const TOTAL_SECONDS = 44.34
 
 const cuts = [
-  { key: 'opening', start: 0, end: 2.5 },
-  { key: 'problem', start: 2.5, end: 5 },
-  { key: 'submit', start: 5, end: 8 },
-  { key: 'package', start: 8, end: 12 },
-  { key: 'assets', start: 12, end: 15 },
-  { key: 'home', start: 15, end: 17 },
-  { key: 'need', start: 17, end: 20 },
-  { key: 'match', start: 20, end: 23 },
-  { key: 'closing', start: 23, end: 25 },
+  { key: 'opening', start: 0, end: 5.4 },
+  { key: 'problem', start: 5.4, end: 9.92 },
+  { key: 'submit', start: 9.92, end: 17 },
+  { key: 'package', start: 17, end: 22.48 },
+  { key: 'assets', start: 22.48, end: 25.64 },
+  { key: 'home', start: 25.64, end: 28.64 },
+  { key: 'need', start: 28.64, end: 30.92 },
+  { key: 'match', start: 30.92, end: 34.88 },
+  { key: 'closing', start: 34.88, end: 44.34 },
 ] as const
 
 type SceneKey = (typeof cuts)[number]['key']
