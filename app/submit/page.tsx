@@ -23,15 +23,32 @@ export default function SubmitPage() {
   const [access, setAccess] = useState<AccessType[]>([])
   const [pricing, setPricing] = useState<Pricing | ''>('')
   const [tags, setTags] = useState('')
+  const [reelFile, setReelFile] = useState<File | null>(null)
+  const [reelError, setReelError] = useState<string | null>(null)
 
   function toggleAccess(type: AccessType) {
     setAccess(prev => prev.includes(type) ? prev.filter(a => a !== type) : [...prev, type])
   }
 
+  function handleReelFile(file: File | null) {
+    setReelError(null)
+    if (!file) { setReelFile(null); return }
+    if (!['video/mp4', 'video/quicktime'].includes(file.type)) {
+      setReelError('Only MP4 or MOV files are accepted.')
+      return
+    }
+    if (file.size > 50 * 1024 * 1024) {
+      setReelError('File must be under 50MB.')
+      return
+    }
+    setReelFile(file)
+  }
+
   function handleSubmit() {
     if (!creatorName || !link || !problem || !audience || !features || access.length === 0 || !pricing) return
+    const reelVideoUrl = reelFile ? URL.createObjectURL(reelFile) : undefined
     sessionStorage.setItem('submitForm', JSON.stringify({
-      creatorName, link, problem, audience, features, access, pricing, tags,
+      creatorName, link, problem, audience, features, access, pricing, tags, reelVideoUrl,
     }))
     router.push('/submit/generating')
   }
@@ -86,6 +103,38 @@ export default function SubmitPage() {
           <label className="text-[10px] font-bold text-indigo-400 uppercase tracking-wide block mb-1.5">{t('submit.q7')}</label>
           <input value={tags} onChange={e => setTags(e.target.value)} placeholder={t('submit.q7_ph')} className="w-full bg-gray-800 text-white rounded-xl px-3 py-2.5 text-sm outline-none border border-gray-700 placeholder-gray-600" />
         </div>
+
+        <div>
+          <label className="text-[10px] font-bold text-indigo-400 uppercase tracking-wide block mb-1.5">
+            {t('submit.reel_label')}
+          </label>
+          <p className="text-[10px] text-gray-500 mb-2">{t('submit.reel_hint')}</p>
+          {reelFile ? (
+            <div className="bg-gray-800 rounded-xl px-3 py-2.5 flex items-center justify-between">
+              <p className="text-white text-xs">{t('submit.reel_selected')} {reelFile.name}</p>
+              <button onClick={() => handleReelFile(null)} className="text-gray-400 text-xs ml-2">✕</button>
+            </div>
+          ) : (
+            <label className="block w-full bg-gray-800 border border-dashed border-gray-600 rounded-xl px-3 py-5 text-center cursor-pointer hover:border-indigo-500 transition-colors">
+              <input
+                type="file"
+                accept="video/mp4,video/quicktime"
+                className="hidden"
+                onChange={e => handleReelFile(e.target.files?.[0] ?? null)}
+              />
+              <p className="text-gray-400 text-xs">{t('submit.reel_accept')}</p>
+            </label>
+          )}
+          {reelError && <p className="text-red-400 text-xs mt-1">{reelError}</p>}
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="w-full mt-3 bg-transparent text-gray-500 text-xs underline text-center"
+          >
+            {t('submit.reel_skip')}
+          </button>
+        </div>
+
         <button onClick={handleSubmit} className="w-full bg-brand text-white font-extrabold text-sm py-4 rounded-2xl mt-2">
           {t('submit.cta')}
         </button>
