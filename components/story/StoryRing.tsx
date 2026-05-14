@@ -10,7 +10,7 @@ interface StoryRingProps {
 export default function StoryRing({ app, seen = false }: StoryRingProps) {
   const gradient = gradientMap[app.storyCard.gradientTheme]
   return (
-    <Link href={`/story/${app.id}`} className="flex flex-col items-center gap-1 flex-shrink-0">
+    <Link href={`/reel/${app.id}`} className="flex flex-col items-center gap-1 flex-shrink-0">
       <div className={`w-14 h-14 rounded-full p-0.5 ${seen ? 'bg-gray-300' : `bg-gradient-to-br ${gradient}`}`}>
         <div className="w-full h-full rounded-full bg-white p-0.5">
           <div className={`w-full h-full rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-xl`}>
