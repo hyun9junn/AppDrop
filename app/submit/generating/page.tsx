@@ -31,7 +31,11 @@ export default function GeneratingPage() {
 
     packageApp(JSON.parse(raw))
       .then(app => {
-        sessionStorage.setItem('generatedApp', JSON.stringify(app))
+        const formData = raw ? JSON.parse(raw) : {}
+        const appWithReel = formData.reelVideoUrl
+          ? { ...app, reelVideoUrl: formData.reelVideoUrl }
+          : app
+        sessionStorage.setItem('generatedApp', JSON.stringify(appWithReel))
         router.push('/submit/preview')
       })
       .catch(err => {

@@ -1,12 +1,12 @@
-// app/submit/preview/page.tsx
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import TopBar from '@/components/layout/TopBar'
-import StoryCard from '@/components/story/StoryCard'
+import ReelViewer from '@/components/story/ReelViewer'
 import Link from 'next/link'
 import type { App } from '@/lib/types'
 import { useLocale } from '@/lib/i18n'
+import { creators } from '@/lib/mock-data/creators'
 
 export default function PreviewPage() {
   const router = useRouter()
@@ -34,8 +34,10 @@ export default function PreviewPage() {
         <p className="text-xs text-gray-500 text-center">{t('preview.subtitle')}</p>
 
         <div>
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">{t('preview.story_card')}</p>
-          <StoryCard app={app} showActions={false} />
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">{t('preview.reel_preview')}</p>
+          <div className="relative mx-auto w-full max-w-[280px] aspect-[9/16] rounded-3xl overflow-hidden border-4 border-gray-800 shadow-xl pointer-events-none">
+            <ReelViewer apps={[app]} creators={creators} initialAppId={app.id} />
+          </div>
         </div>
 
         <div>
