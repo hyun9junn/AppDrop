@@ -141,6 +141,21 @@ const messages = {
     // Category page
     'category.apps': 'Apps',
     'category.empty': 'No apps in this category yet.',
+    // Reels
+    'nav.reels': 'Reels',
+    'reel.watch': 'Watch Reel →',
+    'reel.try': 'Try',
+    'reel.boost': '⬆ Boost',
+    'reel.save_creator': '⭐ Save Creator',
+    'reel.swipe_hint': 'Swipe up for next · Tap sides to navigate',
+    // Submit — reel upload
+    'submit.reel_label': '8. Add your Reel (optional)',
+    'submit.reel_hint': 'Upload a 15–30s vertical MP4 that shows your app in action.',
+    'submit.reel_accept': 'Accepted: MP4, MOV · Max 50MB · Recommended: 9:16 vertical',
+    'submit.reel_skip': 'Skip — we\'ll animate your Reel →',
+    'submit.reel_selected': 'Video selected:',
+    // Preview
+    'preview.reel_preview': 'Reel Preview',
   },
   ko: {
     'nav.discover': '탐색',
@@ -256,6 +271,18 @@ const messages = {
     'time.d_ago': '일 전',
     'category.apps': '앱',
     'category.empty': '이 카테고리에 아직 앱이 없어요.',
+    'nav.reels': '릴스',
+    'reel.watch': '릴 보기 →',
+    'reel.try': '사용해보기',
+    'reel.boost': '⬆ 부스트',
+    'reel.save_creator': '⭐ 크리에이터 저장',
+    'reel.swipe_hint': '위로 스와이프하면 다음 · 양옆 탭으로 이동',
+    'submit.reel_label': '8. 릴 영상 추가 (선택 사항)',
+    'submit.reel_hint': '앱 사용 모습을 담은 15~30초 세로 영상(MP4)을 업로드하세요.',
+    'submit.reel_accept': '허용 형식: MP4, MOV · 최대 50MB · 권장: 9:16 세로',
+    'submit.reel_skip': '건너뛰기 — 자동으로 애니메이션 릴을 만들어드릴게요 →',
+    'submit.reel_selected': '선택된 영상:',
+    'preview.reel_preview': '릴 미리보기',
   },
 } as const
 

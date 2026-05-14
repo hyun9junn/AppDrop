@@ -22,7 +22,7 @@ export const apps: App[] = [
       solutionStatement: 'Paste a job description. Upload your resume. Get a tailored version in 60 seconds.',
       features: ['Matches keywords automatically', 'Keeps your original voice', 'Works with any file format'],
       gradientTheme: 'indigo-purple',
-      shareableUrl: '/story/resume-ai',
+      shareableUrl: '/reel/resume-ai',
     },
     socialCopy: {
       twitter: "Spent 2 hours tailoring my resume last week 😤\n\nResumeAI does it in 60 seconds. Paste the job description, upload your CV, done.\n\nFree → [link]",
@@ -52,7 +52,7 @@ export const apps: App[] = [
       solutionStatement: 'Upload once, get every size instantly — no design skills needed.',
       features: ['Batch resize any image', 'Exports for all major platforms', 'Background removal included'],
       gradientTheme: 'sky-indigo',
-      shareableUrl: '/story/pixeldrop',
+      shareableUrl: '/reel/pixeldrop',
     },
     socialCopy: {
       twitter: "Stop wasting 20 mins resizing images before every post 😤\n\nPixelDrop does it in 3 seconds. Upload once → get every size.\n\nFree → [link]",
@@ -82,7 +82,7 @@ export const apps: App[] = [
       solutionStatement: 'Record, transcribe, summarize, and extract action items — automatically.',
       features: ['Accurate transcription in 30+ languages', 'AI summary + action items', 'Full-text search across all memos'],
       gradientTheme: 'emerald-sky',
-      shareableUrl: '/story/voicenote-pro',
+      shareableUrl: '/reel/voicenote-pro',
     },
     socialCopy: {
       twitter: "I used to lose half my best ideas because voice notes are chaos.\n\nVoiceNote Pro transcribes, summarizes, and extracts action items automatically.\n\nFree to try → [link]",
@@ -112,7 +112,7 @@ export const apps: App[] = [
       solutionStatement: 'Paste your notes, get a full blog post in your voice — in under a minute.',
       features: ['Works from bullet points or rough drafts', 'Matches your writing style', 'Multiple variations generated'],
       gradientTheme: 'indigo-purple',
-      shareableUrl: '/story/blogai',
+      shareableUrl: '/reel/blogai',
     },
     socialCopy: {
       twitter: "My notes were great. My blog posts were not.\n\nBlogAI fixes that. Paste your rough notes → get a polished post.\n\nFree → [link]",
@@ -142,7 +142,7 @@ export const apps: App[] = [
       solutionStatement: 'Describe your product in one paragraph. Get a complete launch page in minutes.',
       features: ['Full page copy generated', 'Built-in waitlist form', 'One-click publish'],
       gradientTheme: 'orange-amber',
-      shareableUrl: '/story/launchkit',
+      shareableUrl: '/reel/launchkit',
     },
     socialCopy: {
       twitter: "Built a product page in 8 minutes yesterday.\n\nLaunchKit generates everything — copy, layout, waitlist form — from a description.\n\nFree to try → [link]",

@@ -46,6 +46,7 @@ export interface App {
   socialCopy: { twitter: string; linkedin: string }
   boostCount: number
   isNew: boolean
+  reelVideoUrl?: string
 }
 
 export interface Creator {
