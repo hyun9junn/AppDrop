@@ -78,14 +78,6 @@ const apps = [
   { title: 'Image Helper', tint: '#E5E5E5', accent: '#1A1815' },
 ]
 
-const assetCards = [
-  { title: '앱 카드', body: '긴 논문도 핵심만 빠르게', color: '#FF5A2C' },
-  { title: '랜딩 이미지', body: 'PaperMate AI launch visual', color: '#3B5BDB' },
-  { title: '인스타 스토리', body: 'Swipe-ready story copy', color: '#1F5F4B' },
-  { title: '릴스 대본', body: '12초 숏폼 흐름 생성', color: '#1A1815' },
-  { title: 'SNS 공유 문구', body: '짧은 런칭 카피 3종', color: '#D99022' },
-]
-
 export default function ShortVideoPage() {
   const elapsed = useTimeline()
   const scale = usePhoneScale()
@@ -335,14 +327,37 @@ function SubmitScene() {
   return (
     <div className="scene submitScene">
       <TopPill title="내 서비스 등록하기" />
-      <section className="submitPanel">
-        <Eyebrow>For developers</Eyebrow>
-        <h1>
-          서비스를 <em>드롭</em>하세요.
-        </h1>
+      <section className="submitHero">
+        <div>
+          <Eyebrow>For developers</Eyebrow>
+          <h1>
+            링크 하나로
+            <br />
+            <em>서비스를 등록</em>합니다.
+          </h1>
+          <p>창업자와 작은 팀을 위한 자동 포장 플로우</p>
+        </div>
+        <div className="submitBadge">
+          <SparkIcon />
+          AI
+        </div>
+      </section>
+      <section className="submitFormCard">
         <Field label="서비스 이름" value="PaperMate AI" delay={0.18} />
         <Field label="서비스 링크" value="https://papermate.ai" mono delay={0.42} />
         <Field label="간단한 설명" value="논문을 쉽게 읽고 요약해주는 AI 도구입니다." delay={0.66} large />
+        <div className="segmentRow">
+          {['무료 체험', '웹앱', 'AI 도구'].map((label, i) => (
+            <motion.span
+              key={label}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.82 + i * 0.1 }}
+            >
+              {label}
+            </motion.span>
+          ))}
+        </div>
         <motion.button
           className="primaryButton"
           initial={{ opacity: 0, y: 12 }}
@@ -357,17 +372,16 @@ function SubmitScene() {
 }
 
 function PackageScene() {
-  const rows = [
-    ['한 줄 소개', '논문을 빠르게 이해하는 AI 리딩 도우미'],
-    ['추천 태그', '#논문요약 #대학생 #AI리딩 #연구도구'],
-    ['추천 사용자', '대학생, 연구자, 리포트 작성자'],
-    ['앱 카드 문구', '긴 논문도 핵심만 빠르게 파악하세요.'],
+  const steps = [
+    ['소개 문구', '논문을 빠르게 이해하는 AI 리딩 도우미'],
+    ['추천 태그', '#논문요약 #대학생 #AI리딩'],
+    ['타깃 사용자', '대학생, 연구자, 리포트 작성자'],
   ]
 
   return (
     <div className="scene packageScene">
       <TopPill title="서비스 포장 중" />
-      <section className="generatorHero">
+      <section className="packagingHero">
         <div className="spinnerTile">
           <motion.div
             className="spinnerRing"
@@ -379,74 +393,100 @@ function PackageScene() {
         <div>
           <Eyebrow>AI Packaging</Eyebrow>
           <h1>
-            포장이 <em>생성</em>되고 있어요.
+            포장이 <em>생성</em>
+            <br />
+            되고 있어요.
           </h1>
         </div>
       </section>
-      <section className="resultPanel">
-        {rows.map(([label, value], i) => (
-          <motion.div
-            className="resultRow"
-            key={label}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.32 + i * 0.35 }}
-          >
-            <div className="checkDot">
-              <CheckIcon />
-            </div>
-            <div>
-              <Eyebrow>{label}</Eyebrow>
-              <p>{value}</p>
-            </div>
-          </motion.div>
-        ))}
+      <section className="packagingBoard">
+        <div className="appCardPreview">
+          <PaperMateVisual compact />
+          <div>
+            <Eyebrow>App card</Eyebrow>
+            <strong>PaperMate AI</strong>
+            <p>긴 논문도 핵심만 빠르게</p>
+          </div>
+        </div>
+        <div className="packagingSteps">
+          {steps.map(([label, value], i) => (
+            <motion.div
+              className="packagingStep"
+              key={label}
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.28 + i * 0.28 }}
+            >
+              <span>
+                <CheckIcon />
+              </span>
+              <div>
+                <Eyebrow>{label}</Eyebrow>
+                <p>{value}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </section>
-      <motion.div
-        className="generatedPreview"
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.7 }}
-      >
-        <PaperMateVisual compact />
-      </motion.div>
     </div>
   )
 }
 
 function AssetsScene() {
+  const kit = [
+    { title: '앱 카드', body: '카드 문구', color: '#FF5A2C', icon: <PaperMateVisual compact /> },
+    { title: '랜딩 이미지', body: '히어로 비주얼', color: '#3B5BDB', icon: <GlobeIcon /> },
+    { title: '숏폼', body: '홍보 흐름', color: '#1A1815', icon: <PlayIcon /> },
+    { title: '공유 문구', body: 'SNS 카피', color: '#1F5F4B', icon: <ShareIcon /> },
+  ]
+
   return (
     <div className="scene assetsScene">
       <TopPill title="홍보물 생성 완료" />
-      <div className="assetHeader">
-        <Eyebrow>Ready to share</Eyebrow>
+      <div className="shareKitHeader">
+        <Eyebrow>Share kit ready</Eyebrow>
         <h1>
-          랜딩 이미지와 <em>숏폼</em>까지.
+          바로 올릴 수 있는
+          <br />
+          <em>홍보 키트</em>
         </h1>
       </div>
-      <motion.div
-        className="assetRail"
-        initial={{ x: 80 }}
-        animate={{ x: 20 }}
-        transition={{ duration: 2.7, ease: [0.2, 0.8, 0.2, 1] }}
-      >
-        {assetCards.map((card, i) => (
-          <div className="assetCard" key={card.title}>
-            <div className="assetPreview" style={{ background: card.color }}>
-              {i === 0 ? <PaperMateVisual compact /> : <AssetGlyph index={i} />}
-            </div>
-            <Eyebrow>{card.title}</Eyebrow>
-            <p>{card.body}</p>
+      <section className="shareKitBoard">
+        <div className="shareKitMain">
+          <div className="shareKitVisual">
+            <PaperMateVisual compact />
           </div>
-        ))}
-      </motion.div>
+          <div>
+            <Eyebrow>Landing preview</Eyebrow>
+            <strong>PaperMate AI</strong>
+            <p>논문을 빠르게 이해하는 AI 리딩 도우미</p>
+          </div>
+        </div>
+        <div className="shareKitGrid">
+          {kit.map((item, i) => (
+            <motion.div
+              className="kitTile"
+              key={item.title}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.18 + i * 0.12 }}
+            >
+              <div className="kitTileVisual" style={{ background: item.color }}>
+                {item.icon}
+              </div>
+              <strong>{item.title}</strong>
+              <span>{item.body}</span>
+            </motion.div>
+          ))}
+        </div>
+      </section>
       <motion.div
         className="assetToConsumer"
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.9 }}
+        transition={{ delay: 1.4 }}
       >
-        <span>소비자 추천 카드로 변환</span>
+        <span>추천 피드로 배달 준비</span>
         <ArrowIcon />
       </motion.div>
     </div>
@@ -454,6 +494,17 @@ function AssetsScene() {
 }
 
 function ConsumerHomeScene() {
+  const categories = [
+    ['✎', '작성', '#FFE9DF'],
+    ['▧', '이미지', '#E2EFE8'],
+    ['◉', '음성', '#FBE5C8'],
+    ['▶', '영상', '#E6DFF7'],
+    ['▥', '데이터', '#DCEAF6'],
+    ['◇', '업무', '#F4E0E0'],
+    ['◎', '디자인', '#EFE6DA'],
+    ['✦', 'AI 도구', '#E5E5E5'],
+  ]
+
   return (
     <div className="scene homeScene">
       <header className="consumerHeader">
@@ -467,11 +518,16 @@ function ConsumerHomeScene() {
         </div>
         <Avatar label="S" color="linear-gradient(140deg, #FFD6BA, #E1C9F0)" darkText />
       </header>
-      <div className="problemPromptMini">
-        <SearchIcon />
-        <span>어떤 도움이 필요하신가요?</span>
-        <b>추천</b>
-      </div>
+      <section className="discoverPrompt">
+        <div className="promptGlow" />
+        <Eyebrow>문제를 입력하세요</Eyebrow>
+        <h2>어떤 도움이 필요하신가요?</h2>
+        <div className="promptInput">
+          <SearchIcon />
+          <span>논문 핵심만 빠르게 파악하고 싶어요</span>
+          <b>추천</b>
+        </div>
+      </section>
       <div className="storyRail">
         {[
           ['K', '#FF5A2C', 'KimD...'],
@@ -487,12 +543,15 @@ function ConsumerHomeScene() {
           </div>
         ))}
       </div>
-      <SectionTitle eyebrow="오늘의 추천 서비스" title="문제별로 정리된 드롭" />
-      <div className="recommendGrid">
-        <SmallServiceCard title="PaperMate AI" tag="#논문요약" color="#3B5BDB" />
-        <SmallServiceCard title="StudyFlow" tag="#학습계획" color="#1F5F4B" />
-        <SmallServiceCard title="TeamSync" tag="#팀플도구" color="#FF5A2C" />
-      </div>
+      <section className="categoryPanel">
+        {categories.map(([icon, label, tint]) => (
+          <div className="categoryTile" key={label}>
+            <div style={{ background: tint }}>{icon}</div>
+            <span>{label}</span>
+          </div>
+        ))}
+      </section>
+      <GlassTabBar />
     </div>
   )
 }
@@ -504,43 +563,46 @@ function NeedScene({ elapsed }: { elapsed: number }) {
 
   return (
     <div className="scene needScene">
-      <div className="needHeader">
+      <section className="needPromptHero">
+        <div className="promptGlow" />
         <Eyebrow>Problem first</Eyebrow>
-        <h1>
-          앱 이름이 아니라, <em>문제</em>를 입력합니다.
-        </h1>
-      </div>
-      <div className="bigSearchPanel">
-        <SearchIcon />
-        <p>
-          {visible}
-          <motion.span
-            className="caret"
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ duration: 0.8, repeat: Infinity }}
-          />
-        </p>
-      </div>
-      <motion.button
-        className="primaryButton needButton"
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0, scale: local > 2.2 ? [1, 0.96, 1] : 1 }}
-        transition={{ delay: 1.65, scale: { duration: 0.28 } }}
-      >
-        내게 맞는 서비스 찾기 <ArrowIcon />
-      </motion.button>
-      <div className="hintCards">
+        <h1>앱 이름이 아니라 문제를 입력합니다.</h1>
+        <div className="bigSearchPanel">
+          <SearchIcon />
+          <p>
+            {visible}
+            <motion.span
+              className="caret"
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ duration: 0.8, repeat: Infinity }}
+            />
+          </p>
+        </div>
+      </section>
+      <div className="needSuggestions">
         {['리포트 작성', '팀플 정리', '창업 홍보'].map((hint, i) => (
           <motion.span
             key={hint}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 + i * 0.18 }}
+            transition={{ delay: 0.42 + i * 0.16 }}
           >
             {hint}
           </motion.span>
         ))}
       </div>
+      <motion.div
+        className="needResultPreview"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: local > 1.5 ? 1 : 0, y: local > 1.5 ? 0 : 16 }}
+        transition={{ duration: 0.28 }}
+      >
+        <div className="serviceDot">P</div>
+        <div>
+          <strong>PaperMate AI</strong>
+          <p>문제와 가장 가까운 서비스</p>
+        </div>
+      </motion.div>
     </div>
   )
 }
@@ -549,36 +611,60 @@ function MatchScene() {
   return (
     <div className="scene matchScene">
       <TopPill title="이런 서비스를 추천드려요" />
-      <div className="matchIntro">
-        <Eyebrow>Delivery match</Eyebrow>
-        <h1>
-          필요한 서비스를 <em>배달</em>합니다.
-        </h1>
-      </div>
-      <div className="matchStack">
-        <MatchCard
-          best
-          title="PaperMate AI"
-          body="논문을 빠르게 이해하는 AI 리딩 도우미"
-          reason="논문 요약과 핵심 문장 추출에 적합합니다."
-          delay={0.1}
-          color="#3B5BDB"
-        />
-        <MatchCard
-          title="StudyFlow"
-          body="공부 계획을 자동으로 정리해주는 도구"
-          reason="읽은 논문을 학습 계획으로 연결할 수 있습니다."
-          delay={0.42}
-          color="#1F5F4B"
-        />
-        <MatchCard
-          title="ResearchClip"
-          body="중요 문장을 저장하고 공유하는 리서치 노트"
-          reason="자료 조사 내용을 팀원에게 전달하기 좋습니다."
-          delay={0.72}
-          color="#FF5A2C"
-        />
-      </div>
+      <section className="matchDetailHero">
+        <div className="matchDetailVisual">
+          <PaperMateVisual compact />
+          <div className="heroWatchPill">
+            <PlayIcon />
+            추천 이유 보기
+          </div>
+        </div>
+        <div className="matchDetailCopy">
+          <Eyebrow>Best match · AI reading</Eyebrow>
+          <h1>
+            PaperMate
+            <br />
+            AI
+          </h1>
+          <p>논문을 빠르게 이해하는 AI 리딩 도우미</p>
+          <div className="creatorStrip">
+            <Avatar label="K" color="#FF5A2C" />
+            <div>
+              <strong>KimDev Studio</strong>
+              <span>검증된 개발자 · 2,430 boosts</span>
+            </div>
+          </div>
+          <div className="detailActions">
+            <button>서비스 열기 <ArrowIcon /></button>
+            <button>저장</button>
+          </div>
+        </div>
+      </section>
+      <section className="matchReasonPanel">
+        <div className="reasonBox">
+          <Eyebrow>추천 이유</Eyebrow>
+          <small>논문 요약과 핵심 문장 추출에 적합합니다.</small>
+        </div>
+        <div className="tagLine">#논문요약 #AI리딩 #대학생</div>
+      </section>
+    </div>
+  )
+}
+
+function GlassTabBar() {
+  return (
+    <div className="glassTabBar">
+      {[
+        ['⌂', 'Discover', true],
+        ['▻', 'Reels', false],
+        ['▤', 'Inbox', false],
+        ['○', 'You', false],
+      ].map(([icon, label, active]) => (
+        <div className={`tabItem ${active ? 'active' : ''}`} key={label.toString()}>
+          <span>{icon}</span>
+          <small>{label}</small>
+        </div>
+      ))}
     </div>
   )
 }
@@ -675,66 +761,6 @@ function Avatar({
   )
 }
 
-function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
-  return (
-    <div className="sectionTitle">
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h2>{title}</h2>
-    </div>
-  )
-}
-
-function SmallServiceCard({ title, tag, color }: { title: string; tag: string; color: string }) {
-  return (
-    <div className="smallServiceCard">
-      <div className="smallVisual" style={{ background: color }} />
-      <strong>{title}</strong>
-      <span>{tag}</span>
-    </div>
-  )
-}
-
-function MatchCard({
-  title,
-  body,
-  reason,
-  color,
-  best,
-  delay,
-}: {
-  title: string
-  body: string
-  reason: string
-  color: string
-  best?: boolean
-  delay: number
-}) {
-  return (
-    <motion.div
-      className={`matchCard ${best ? 'best' : ''}`}
-      initial={{ opacity: 0, y: 72 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.48, ease: [0.2, 0.8, 0.2, 1] }}
-    >
-      <div className="matchVisual" style={{ background: color }}>
-        P
-      </div>
-      <div className="matchCopy">
-        <div className="matchTop">
-          <strong>{title}</strong>
-          {best && <span>추천 1순위</span>}
-        </div>
-        <p>{body}</p>
-        <div className="reasonBox">
-          <Eyebrow>추천 이유</Eyebrow>
-          <small>{reason}</small>
-        </div>
-        <div className="tagLine">#논문요약 #AI리딩 #대학생</div>
-      </div>
-    </motion.div>
-  )
-}
-
 function PaperMateVisual({ compact }: { compact?: boolean }) {
   return (
     <div className={`paperMateVisual ${compact ? 'compact' : ''}`}>
@@ -742,21 +768,14 @@ function PaperMateVisual({ compact }: { compact?: boolean }) {
         <span />
         <span />
         <span />
+        <span />
+        <span />
       </div>
-      <div className="paperPulse">
-        <i />
-        <i />
-        <i />
+      <div className="paperCheck">
+        <CheckIcon />
       </div>
     </div>
   )
-}
-
-function AssetGlyph({ index }: { index: number }) {
-  if (index === 1) return <GlobeIcon />
-  if (index === 2) return <StoryIcon />
-  if (index === 3) return <PlayIcon />
-  return <ShareIcon />
 }
 
 function SparkIcon() {
@@ -842,15 +861,6 @@ function GlobeIcon() {
     <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="12" r="9" stroke="white" strokeWidth="1.6" />
       <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="white" strokeWidth="1.4" />
-    </svg>
-  )
-}
-
-function StoryIcon() {
-  return (
-    <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
-      <rect x="6" y="3" width="12" height="18" rx="3" stroke="white" strokeWidth="1.7" />
-      <path d="M9 8h6M9 12h5M9 16h3" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   )
 }
@@ -1503,7 +1513,7 @@ const styles = `
   .paperDoc span {
     display: block;
     height: 6px;
-    margin-bottom: 9px;
+    margin-bottom: 8px;
     border-radius: 999px;
     background: #BFD9F0;
   }
@@ -1518,32 +1528,41 @@ const styles = `
     background: #FFB68A;
   }
 
-  .paperPulse {
+  .paperDoc span:nth-child(4) {
+    width: 64%;
+    background: #E8E2D7;
+  }
+
+  .paperDoc span:nth-child(5) {
+    width: 78%;
+    background: rgba(31,95,75,0.26);
+  }
+
+  .paperCheck {
     position: absolute;
     right: 18px;
     bottom: 18px;
-    display: flex;
-    gap: 6px;
-    align-items: end;
-  }
-
-  .paperPulse i {
-    display: block;
-    width: 12px;
-    height: 46px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.74);
-    animation: pulseBar 0.9s ease-in-out infinite;
-  }
-
-  .paperPulse i:nth-child(2) {
-    height: 66px;
-    animation-delay: 0.12s;
-  }
-
-  .paperPulse i:nth-child(3) {
+    width: 34px;
     height: 34px;
-    animation-delay: 0.24s;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--sv-mint);
+    color: white;
+    box-shadow: 0 0 0 5px rgba(255,255,255,0.22), 0 12px 22px rgba(0,0,0,0.18);
+  }
+
+  .paperMateVisual.compact .paperCheck {
+    right: 10px;
+    bottom: 10px;
+    width: 26px;
+    height: 26px;
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.18), 0 8px 16px rgba(0,0,0,0.16);
+  }
+
+  .paperCheck svg {
+    width: 14px;
+    height: 14px;
   }
 
   .assetHeader {
@@ -1952,6 +1971,715 @@ const styles = `
     line-height: 1.45;
     font-weight: 600;
     letter-spacing: -0.1px;
+  }
+
+  .submitHero {
+    margin: 16px 22px 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .submitHero h1,
+  .packagingHero h1,
+  .shareKitHeader h1,
+  .discoverPrompt h2,
+  .needPromptHero h1,
+  .matchFeatureCopy h1 {
+    margin: 4px 0 0;
+    font-family: var(--font-serif, Georgia, serif);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.35px;
+  }
+
+  .submitHero h1 {
+    font-size: 31px;
+  }
+
+  .submitHero p {
+    margin: 8px 0 0;
+    color: var(--sv-ink-soft);
+    font-size: 12.5px;
+    line-height: 1.35;
+    font-weight: 550;
+  }
+
+  .submitBadge {
+    width: 58px;
+    height: 58px;
+    margin-top: 2px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    background: var(--sv-ink);
+    color: white;
+    font-size: 13px;
+    font-weight: 750;
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .submitBadge svg {
+    width: 22px;
+    height: 22px;
+    color: var(--sv-coral);
+  }
+
+  .submitFormCard {
+    margin: 16px 16px 0;
+    padding: 14px;
+    border-radius: 26px;
+    background: rgba(255,255,255,0.78);
+    border: 1px solid var(--sv-line);
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .submitFormCard .fieldBlock:first-child {
+    margin-top: 0;
+  }
+
+  .submitFormCard .fakeInput.large {
+    min-height: 70px;
+  }
+
+  .segmentRow {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .segmentRow span {
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: var(--sv-cream-2);
+    color: var(--sv-ink);
+    font-size: 11.5px;
+    font-weight: 650;
+  }
+
+  .packagingHero {
+    margin: 16px 22px 0;
+    padding: 18px;
+    border-radius: 28px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background:
+      radial-gradient(150px 120px at 82% 12%, rgba(255,90,44,0.46), transparent 65%),
+      var(--sv-ink);
+    color: white;
+    box-shadow: var(--sv-shadow-pop);
+  }
+
+  .packagingHero .eyebrow {
+    color: rgba(255,255,255,0.56);
+  }
+
+  .packagingHero h1 {
+    font-size: 26px;
+  }
+
+  .packagingBoard,
+  .shareKitBoard {
+    margin: 14px 16px 0;
+    padding: 14px;
+    border-radius: 26px;
+    background: white;
+    border: 1px solid var(--sv-line);
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .appCardPreview {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px;
+    border-radius: 22px;
+    background: #3B5BDB;
+    color: white;
+    overflow: hidden;
+  }
+
+  .appCardPreview .paperMateVisual {
+    width: 82px;
+    min-height: 74px;
+    border-radius: 16px;
+    flex: 0 0 auto;
+    background-color: rgba(255,255,255,0.14);
+  }
+
+  .appCardPreview .eyebrow {
+    color: rgba(255,255,255,0.62);
+  }
+
+  .appCardPreview strong,
+  .shareKitMain strong,
+  .kitTile strong,
+  .compactMatchRow strong {
+    display: block;
+    font-size: 14px;
+    letter-spacing: -0.1px;
+  }
+
+  .appCardPreview p,
+  .shareKitMain p,
+  .kitTile span,
+  .compactMatchRow p {
+    margin: 4px 0 0;
+    color: inherit;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .packagingSteps {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .packagingStep {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 18px;
+    background: var(--sv-cream);
+  }
+
+  .packagingStep > span {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--sv-mint);
+    color: white;
+    flex: 0 0 auto;
+  }
+
+  .packagingStep p {
+    margin: 3px 0 0;
+    color: var(--sv-ink);
+    font-size: 12.5px;
+    line-height: 1.32;
+  }
+
+  .shareKitHeader {
+    padding: 16px 22px 0;
+  }
+
+  .shareKitHeader h1 {
+    font-size: 30px;
+  }
+
+  .shareKitMain {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .shareKitVisual {
+    width: 104px;
+    height: 86px;
+    border-radius: 19px;
+    overflow: hidden;
+    flex: 0 0 auto;
+    background: #3B5BDB;
+  }
+
+  .shareKitGrid {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .kitTile {
+    min-width: 0;
+    padding: 8px;
+    border-radius: 18px;
+    background: var(--sv-cream);
+    text-align: center;
+  }
+
+  .kitTileVisual {
+    height: 54px;
+    margin-bottom: 7px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: white;
+  }
+
+  .kitTileVisual svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .kitTile strong {
+    font-size: 10.5px;
+  }
+
+  .kitTile span {
+    color: var(--sv-ink-soft);
+    font-size: 9.5px;
+  }
+
+  .discoverPrompt,
+  .needPromptHero {
+    position: relative;
+    margin: 14px 16px 0;
+    padding: 18px;
+    border-radius: 28px;
+    overflow: hidden;
+    background: var(--sv-ink);
+    color: white;
+    box-shadow: var(--sv-shadow-pop);
+  }
+
+  .promptGlow {
+    position: absolute;
+    right: -42px;
+    top: -52px;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255,90,44,0.48), transparent);
+    pointer-events: none;
+  }
+
+  .discoverPrompt .eyebrow,
+  .needPromptHero .eyebrow {
+    position: relative;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .discoverPrompt h2 {
+    position: relative;
+    margin-top: 6px;
+    color: white;
+    font-size: 27px;
+  }
+
+  .promptInput {
+    position: relative;
+    margin-top: 14px;
+    padding: 12px 13px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: rgba(255,255,255,0.58);
+  }
+
+  .promptInput span {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    font-size: 12.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .promptInput b {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--sv-coral);
+    color: white;
+    font-size: 11.5px;
+  }
+
+  .categoryPanel {
+    margin: 14px 16px 0;
+    padding: 12px;
+    border-radius: 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    background: white;
+    border: 1px solid var(--sv-line);
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .categoryTile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .categoryTile div {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    color: var(--sv-ink);
+    font-size: 18px;
+    font-weight: 650;
+  }
+
+  .categoryTile span {
+    font-size: 10.5px;
+    font-weight: 650;
+    color: var(--sv-ink);
+  }
+
+  .needPromptHero {
+    margin-top: 26px;
+    padding: 20px;
+  }
+
+  .needPromptHero h1 {
+    position: relative;
+    margin-top: 6px;
+    color: white;
+    font-size: 27px;
+    word-break: keep-all;
+  }
+
+  .needPromptHero .bigSearchPanel {
+    position: relative;
+    margin: 16px 0 0;
+    min-height: 118px;
+    padding: 16px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.16);
+    color: white;
+    box-shadow: none;
+  }
+
+  .needPromptHero .bigSearchPanel svg {
+    color: rgba(255,255,255,0.58);
+  }
+
+  .needPromptHero .bigSearchPanel p {
+    margin: 16px 0 0;
+    min-height: 58px;
+    font-size: 22px;
+    line-height: 1.32;
+    font-weight: 650;
+  }
+
+  .needSuggestions {
+    margin: 14px 22px 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .needSuggestions span {
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: white;
+    border: 1px solid var(--sv-line);
+    color: var(--sv-ink-soft);
+    font-size: 12px;
+    font-weight: 650;
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .needResultPreview {
+    margin: 14px 22px 0;
+    padding: 12px;
+    border-radius: 22px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--sv-line);
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .needResultPreview strong {
+    font-size: 14px;
+  }
+
+  .needResultPreview p {
+    margin: 3px 0 0;
+    color: var(--sv-ink-soft);
+    font-size: 12px;
+  }
+
+  .matchFeature {
+    margin: 14px 16px 0;
+    border-radius: 28px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid rgba(255,90,44,0.42);
+    box-shadow: var(--sv-shadow-pop);
+  }
+
+  .matchFeatureVisual {
+    height: 152px;
+    background: #3B5BDB;
+  }
+
+  .matchFeatureCopy {
+    padding: 14px;
+  }
+
+  .matchFeatureCopy .matchTop span {
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--sv-coral);
+    color: white;
+    font-size: 10.5px;
+    font-weight: 750;
+  }
+
+  .matchFeatureCopy h1 {
+    margin-top: 8px;
+    font-size: 28px;
+  }
+
+  .matchFeatureCopy > p {
+    margin: 5px 0 0;
+    color: var(--sv-ink-soft);
+    font-size: 13px;
+  }
+
+  .compactMatchList {
+    margin: 10px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .compactMatchRow {
+    padding: 10px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border: 1px solid var(--sv-line);
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .compactMatchRow > div {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 22px;
+  }
+
+  .compactMatchRow section {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .compactMatchRow p {
+    color: var(--sv-ink-soft);
+  }
+
+  .glassTabBar {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 14px;
+    z-index: 10;
+    padding: 6px;
+    border-radius: 28px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    background: rgba(255,255,255,0.72);
+    border: 1px solid rgba(20,16,10,0.04);
+    box-shadow: 0 8px 32px rgba(20,16,10,0.10), 0 1px 0 rgba(255,255,255,0.8) inset;
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  .tabItem {
+    height: 50px;
+    border-radius: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: var(--sv-ink-soft);
+  }
+
+  .tabItem.active {
+    background: var(--sv-ink);
+    color: white;
+  }
+
+  .tabItem span {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .tabItem small {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: -0.1px;
+  }
+
+  .matchDetailHero {
+    margin: 14px 16px 0;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #3B5BDB;
+    color: white;
+    box-shadow: var(--sv-shadow-pop);
+  }
+
+  .matchDetailVisual {
+    position: relative;
+    height: 182px;
+    overflow: hidden;
+    background:
+      radial-gradient(170px 130px at 85% 20%, rgba(255,255,255,0.24), transparent 65%),
+      #3B5BDB;
+  }
+
+  .matchDetailVisual .paperMateVisual {
+    position: absolute;
+    left: 22px;
+    top: 26px;
+    width: 118px;
+    height: 132px;
+    min-height: 0;
+    border-radius: 24px;
+    background-color: rgba(255,255,255,0.12);
+    transform: rotate(-4deg);
+  }
+
+  .heroWatchPill {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(0,0,0,0.38);
+    color: white;
+    font-size: 12px;
+    font-weight: 650;
+    backdrop-filter: blur(8px);
+  }
+
+  .heroWatchPill svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .matchDetailCopy {
+    padding: 17px 18px 18px;
+    background:
+      radial-gradient(180px 130px at 100% 0%, rgba(255,90,44,0.18), transparent 70%),
+      #2550CB;
+  }
+
+  .matchDetailCopy .eyebrow {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .matchDetailCopy h1 {
+    margin: 8px 0 0;
+    font-family: var(--font-serif, Georgia, serif);
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.6px;
+  }
+
+  .matchDetailCopy > p {
+    margin: 8px 0 0;
+    color: rgba(255,255,255,0.88);
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+
+  .creatorStrip {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .creatorStrip .avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .creatorStrip strong,
+  .creatorStrip span {
+    display: block;
+  }
+
+  .creatorStrip strong {
+    font-size: 12.5px;
+  }
+
+  .creatorStrip span {
+    margin-top: 2px;
+    color: rgba(255,255,255,0.62);
+    font-size: 11px;
+  }
+
+  .detailActions {
+    margin-top: 14px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .detailActions button {
+    height: 42px;
+    border: 0;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .detailActions button:first-child {
+    flex: 1;
+    background: white;
+    color: #1A1815;
+  }
+
+  .detailActions button:last-child {
+    width: 74px;
+    background: rgba(255,255,255,0.16);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.24);
+  }
+
+  .matchReasonPanel {
+    margin: 10px 16px 0;
+    padding: 12px;
+    border-radius: 22px;
+    background: white;
+    border: 1px solid var(--sv-line);
+    box-shadow: var(--sv-shadow-card);
+  }
+
+  .assetsScene .assetToConsumer {
+    background: var(--sv-coral);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.18) inset, 0 12px 24px -14px rgba(255,90,44,0.72);
   }
 
   @keyframes pulseBar {
