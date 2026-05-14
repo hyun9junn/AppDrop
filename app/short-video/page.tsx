@@ -19,6 +19,54 @@ const cuts = [
 
 type SceneKey = (typeof cuts)[number]['key']
 
+const subtitles = [
+  {
+    start: 0,
+    end: 5.4,
+    lines: ['요즘은 AI 덕분에 누구나', '앱과 웹서비스를 만들 수 있습니다.'],
+  },
+  {
+    start: 5.4,
+    end: 9.92,
+    lines: ['하지만 만든 서비스를 알리는 일은', '여전히 어렵습니다.'],
+  },
+  {
+    start: 9.92,
+    end: 17,
+    lines: ['앱나리는 창업자와 작은 팀이 만든 서비스를', 'AI가 자동으로 포장해주는 플랫폼입니다.'],
+  },
+  {
+    start: 17,
+    end: 22.48,
+    lines: ['서비스 링크만 입력하면', '소개 문구, 태그, 앱 카드,'],
+  },
+  {
+    start: 22.48,
+    end: 25.64,
+    lines: ['랜딩 이미지, 숏폼 홍보물이', '생성됩니다.'],
+  },
+  {
+    start: 25.64,
+    end: 28.64,
+    lines: ['소비자는 앱 이름을 몰라도 됩니다.'],
+  },
+  {
+    start: 28.64,
+    end: 30.92,
+    lines: ['자신의 문제만 입력하면,'],
+  },
+  {
+    start: 30.92,
+    end: 34.88,
+    lines: ['앱나리가 필요한 서비스를', '배달하듯 추천합니다.'],
+  },
+  {
+    start: 34.88,
+    end: 44.34,
+    lines: ['앱나리는 새로 출발하는 AI·웹 서비스가', '더 쉽게 발견되고 성장하도록 돕습니다.'],
+  },
+] as const
+
 const apps = [
   { title: 'AI Resume Builder', tint: '#E6DFF7', accent: '#8A5CF6' },
   { title: 'Study Planner', tint: '#FBE5C8', accent: '#D99022' },
@@ -75,6 +123,7 @@ export default function ShortVideoPage() {
               <Scene name={scene} elapsed={elapsed} />
             </motion.div>
           </AnimatePresence>
+          <SubtitleOverlay elapsed={elapsed} />
         </div>
       </div>
     </main>
@@ -139,6 +188,26 @@ function Scene({ name, elapsed }: { name: SceneKey; elapsed: number }) {
   return <ClosingScene />
 }
 
+function SubtitleOverlay({ elapsed }: { elapsed: number }) {
+  const subtitle = subtitles.find(item => elapsed >= item.start && elapsed < item.end)
+  if (!subtitle) return null
+
+  return (
+    <motion.div
+      key={`${subtitle.start}-${subtitle.end}`}
+      className="subtitleOverlay"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 6 }}
+      transition={{ duration: 0.16 }}
+    >
+      {subtitle.lines.map(line => (
+        <span key={line}>{line}</span>
+      ))}
+    </motion.div>
+  )
+}
+
 function StatusBar() {
   return (
     <div className="statusBar">
@@ -189,9 +258,15 @@ function OpeningScene() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1.05, duration: 0.4 }}
       >
-        <div className="appMark">✦</div>
-        <div className="brandName">AppDrop</div>
-        <Eyebrow>앱포장배달 플랫폼</Eyebrow>
+        <div className="appMark">
+          <ButterflyIcon />
+        </div>
+        <div className="brandName">앱나리</div>
+        <div className="brandSubtitle">
+          개발자와 사용자 사이를 연결하는
+          <br />
+          AI 큐레이션 기반 앱 딜리버리 플랫폼
+        </div>
       </motion.div>
     </div>
   )
@@ -207,10 +282,10 @@ function ProblemScene() {
             className="buriedCard"
             style={{
               left: [20, 206, 74, 230, 35, 154, 251, 96][i],
-              top: [90, 116, 208, 272, 338, 392, 470, 528][i],
+              top: [102, 122, 220, 286, 354, 408, 486, 544][i],
               background: app.tint,
               rotate: [-8, 7, 4, -5, 5, -3, 8, -6][i],
-              zIndex: i === 2 ? 1 : 3,
+              zIndex: i === 2 ? 1 : 2,
             }}
             initial={{ opacity: 0, x: i % 2 ? 34 : -34 }}
             animate={{ opacity: i === 2 ? 0.52 : 1, x: 0 }}
@@ -232,24 +307,24 @@ function ProblemScene() {
           <span>묻혀버린 작은 서비스</span>
         </div>
       </motion.div>
-      <div className="bubbleStack">
-        {['어떻게 소개하지?', '어디에 올리지?', '누가 써줄까?'].map((text, i) => (
-          <motion.div
-            key={text}
-            className="thoughtBubble"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.58 + i * 0.2 }}
-          >
-            {text}
-          </motion.div>
-        ))}
-      </div>
       <div className="developerCard">
         <Avatar label="F" color="#FF5A2C" />
-        <div>
+        <div className="founderCopy">
           <Eyebrow>Founder</Eyebrow>
           <p>좋은 서비스인데 발견되지 않아요.</p>
+          <div className="founderBubbles">
+            {['어떻게 소개하지?', '어디에 올리지?', '누가 써줄까?'].map((text, i) => (
+              <motion.span
+                key={text}
+                className="thoughtBubble"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.58 + i * 0.2 }}
+              >
+                {text}
+              </motion.span>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -351,8 +426,8 @@ function AssetsScene() {
       </div>
       <motion.div
         className="assetRail"
-        initial={{ x: 24 }}
-        animate={{ x: -210 }}
+        initial={{ x: 80 }}
+        animate={{ x: 20 }}
         transition={{ duration: 2.7, ease: [0.2, 0.8, 0.2, 1] }}
       >
         {assetCards.map((card, i) => (
@@ -385,7 +460,9 @@ function ConsumerHomeScene() {
         <div>
           <Eyebrow>Friday · May 15</Eyebrow>
           <h1>
-            필요한 서비스를 <em>찾아보세요.</em>
+            필요한 서비스만
+            <br />
+            <em>찾아보세요.</em>
           </h1>
         </div>
         <Avatar label="S" color="linear-gradient(140deg, #FFD6BA, #E1C9F0)" darkText />
@@ -393,7 +470,22 @@ function ConsumerHomeScene() {
       <div className="problemPromptMini">
         <SearchIcon />
         <span>어떤 도움이 필요하신가요?</span>
-        <b>Match</b>
+        <b>추천</b>
+      </div>
+      <div className="storyRail">
+        {[
+          ['K', '#FF5A2C', 'KimD...'],
+          ['S', '#D4A017', 'ShipF...'],
+          ['W', '#3B5BDB', 'WriteS...'],
+          ['N', '#1F5F4B', 'Nova...'],
+        ].map(([label, color, name]) => (
+          <div className="storyItem" key={name}>
+            <div className="storyRing" style={{ background: `conic-gradient(from 220deg, ${color}, #F6D89A, ${color})` }}>
+              <span style={{ background: color }}>{label}</span>
+            </div>
+            <small>{name}</small>
+          </div>
+        ))}
       </div>
       <SectionTitle eyebrow="오늘의 추천 서비스" title="문제별로 정리된 드롭" />
       <div className="recommendGrid">
@@ -401,21 +493,13 @@ function ConsumerHomeScene() {
         <SmallServiceCard title="StudyFlow" tag="#학습계획" color="#1F5F4B" />
         <SmallServiceCard title="TeamSync" tag="#팀플도구" color="#FF5A2C" />
       </div>
-      <SectionTitle eyebrow="공부에 도움 되는 AI" title="지금 뜨는 도구" />
-      <div className="wideServiceCard">
-        <PaperMateVisual compact />
-        <div>
-          <strong>PaperMate AI</strong>
-          <p>논문을 빠르게 이해하는 AI 리딩 도우미</p>
-        </div>
-      </div>
     </div>
   )
 }
 
 function NeedScene({ elapsed }: { elapsed: number }) {
   const text = '논문 읽을 때 핵심만 빠르게 파악하고 싶어요.'
-  const local = Math.max(0, elapsed - 17)
+  const local = Math.max(0, elapsed - 28.64)
   const visible = text.slice(0, Math.min(text.length, Math.floor(local * 17)))
 
   return (
@@ -508,32 +592,24 @@ function ClosingScene() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.42 }}
       >
-        ✦
+        <ButterflyIcon />
       </motion.div>
       <motion.h1
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.16 }}
       >
-        AppDrop
+        앱나리
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.32 }}
       >
-        AI·웹 서비스를 포장하고,
+        개발자와 사용자 사이를 연결하는
         <br />
-        필요한 사용자에게 배달합니다.
+        AI 큐레이션 기반 앱 딜리버리 플랫폼
       </motion.p>
-      <motion.div
-        className="closingChip"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.56 }}
-      >
-        앱포장배달 플랫폼
-      </motion.div>
     </div>
   )
 }
@@ -579,7 +655,8 @@ function Field({
 }
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <span className="eyebrow">{children}</span>
+  const isKorean = typeof children === 'string' && /[가-힣]/.test(children)
+  return <span className={`eyebrow ${isKorean ? 'koreanEyebrow' : ''}`}>{children}</span>
 }
 
 function Avatar({
@@ -645,7 +722,7 @@ function MatchCard({
       <div className="matchCopy">
         <div className="matchTop">
           <strong>{title}</strong>
-          {best && <span>BEST MATCH</span>}
+          {best && <span>추천 1순위</span>}
         </div>
         <p>{body}</p>
         <div className="reasonBox">
@@ -686,6 +763,43 @@ function SparkIcon() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
       <path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function ButterflyIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path
+        d="M15.1 15.2C11.9 9.1 8.5 6.5 5.6 7.3C2.5 8.2 2.7 12.3 5.2 15.2C7.3 17.6 10.7 18.2 15.1 15.2Z"
+        fill="currentColor"
+      />
+      <path
+        d="M16.9 15.2C20.1 9.1 23.5 6.5 26.4 7.3C29.5 8.2 29.3 12.3 26.8 15.2C24.7 17.6 21.3 18.2 16.9 15.2Z"
+        fill="currentColor"
+      />
+      <path
+        d="M14.5 17.2C10.8 16.1 7.7 16.9 6.4 19.1C5 21.4 6.7 24.4 9.5 25C12.4 25.6 14.2 22.7 14.5 17.2Z"
+        fill="currentColor"
+        opacity=".78"
+      />
+      <path
+        d="M17.5 17.2C21.2 16.1 24.3 16.9 25.6 19.1C27 21.4 25.3 24.4 22.5 25C19.6 25.6 17.8 22.7 17.5 17.2Z"
+        fill="currentColor"
+        opacity=".78"
+      />
+      <path
+        d="M16 13.8V23.5"
+        stroke="white"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d="M13.7 10.2C14.6 11.2 15.2 12.1 16 13.8C16.8 12.1 17.4 11.2 18.3 10.2"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }
@@ -887,7 +1001,7 @@ const styles = `
   .sceneLayer {
     position: absolute;
     inset: 0;
-    top: 54px;
+    top: 66px;
   }
 
   .scene {
@@ -896,6 +1010,42 @@ const styles = `
     overflow: hidden;
     padding-bottom: 44px;
     background: var(--sv-cream);
+  }
+
+  .shortVideoStage:not([data-scene="opening"]):not([data-scene="closing"]) .scene {
+    bottom: 122px;
+    padding-bottom: 24px;
+  }
+
+  .subtitleOverlay {
+    position: absolute;
+    left: 30px;
+    right: 30px;
+    bottom: 44px;
+    z-index: 86;
+    min-height: 64px;
+    padding: 13px 18px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: rgba(16, 14, 12, 0.92);
+    color: white;
+    box-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.52);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .subtitleOverlay span {
+    display: block;
+    max-width: 100%;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.1px;
+    word-break: keep-all;
   }
 
   .eyebrow {
@@ -909,16 +1059,23 @@ const styles = `
     text-transform: uppercase;
   }
 
+  .eyebrow.koreanEyebrow {
+    font-family: var(--font-sans, -apple-system, system-ui, sans-serif);
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
   .brandLockup {
     position: absolute;
-    left: 43px;
-    right: 43px;
-    top: 296px;
+    left: 54px;
+    right: 54px;
+    top: 300px;
     z-index: 8;
-    padding: 30px 20px;
-    border-radius: 32px;
+    padding: 28px 20px;
+    border-radius: 28px;
     text-align: center;
-    background: rgba(255,255,255,0.76);
+    background: rgba(255,255,255,0.72);
     border: 1px solid rgba(232,226,215,0.86);
     box-shadow: var(--sv-shadow-pop);
     backdrop-filter: blur(16px);
@@ -937,12 +1094,37 @@ const styles = `
     font-size: 24px;
   }
 
+  .appMark svg,
+  .closingMark svg {
+    width: 31px;
+    height: 31px;
+  }
+
   .brandName {
     margin-bottom: 8px;
-    font-family: var(--font-serif, Georgia, serif);
+    font-family: var(--font-sans, -apple-system, system-ui, sans-serif);
     font-size: 46px;
+    font-weight: 800;
     line-height: 1;
-    letter-spacing: -0.4px;
+    letter-spacing: -1.2px;
+  }
+
+  .brandLockup .eyebrow {
+    font-family: inherit;
+    letter-spacing: 0;
+    font-weight: 650;
+  }
+
+  .brandSubtitle {
+    max-width: 236px;
+    margin: 0 auto;
+    color: var(--sv-ink-faint);
+    font-family: var(--font-sans, -apple-system, system-ui, sans-serif);
+    font-size: 12px;
+    font-weight: 550;
+    line-height: 1.5;
+    letter-spacing: 0;
+    word-break: keep-all;
   }
 
   .miniAppCard {
@@ -1030,47 +1212,50 @@ const styles = `
     font-size: 12px;
   }
 
-  .bubbleStack {
-    position: absolute;
-    top: 100px;
-    left: 32px;
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .thoughtBubble {
     width: fit-content;
-    padding: 9px 12px;
+    padding: 7px 10px;
     border-radius: 999px;
     background: var(--sv-ink);
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 650;
     box-shadow: var(--sv-shadow-card);
+    white-space: nowrap;
   }
 
   .developerCard {
     position: absolute;
     left: 20px;
     right: 20px;
-    bottom: 72px;
+    bottom: 62px;
     z-index: 4;
     padding: 16px;
     border-radius: 24px;
     display: flex;
     gap: 13px;
-    align-items: center;
+    align-items: flex-start;
     background: white;
     border: 1px solid var(--sv-line);
     box-shadow: var(--sv-shadow-card);
+  }
+
+  .founderCopy {
+    min-width: 0;
+    flex: 1;
   }
 
   .developerCard p {
     margin: 4px 0 0;
     font-size: 14px;
     color: var(--sv-ink);
+  }
+
+  .founderBubbles {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
   }
 
   .avatar {
@@ -1136,7 +1321,8 @@ const styles = `
 
   em {
     color: var(--sv-coral);
-    font-style: italic;
+    font-style: normal;
+    font-weight: 700;
   }
 
   .fieldBlock {
@@ -1206,7 +1392,8 @@ const styles = `
   }
 
   .generatorHero h1 {
-    font-size: 27px;
+    font-size: 24px;
+    word-break: keep-all;
   }
 
   .spinnerTile {
@@ -1368,7 +1555,7 @@ const styles = `
   }
 
   .assetRail {
-    margin-top: 26px;
+    margin-top: 24px;
     display: flex;
     gap: 12px;
     padding-left: 22px;
@@ -1376,7 +1563,7 @@ const styles = `
   }
 
   .assetCard {
-    width: 168px;
+    width: 152px;
     padding: 12px;
     border-radius: 22px;
     background: white;
@@ -1385,7 +1572,7 @@ const styles = `
   }
 
   .assetPreview {
-    height: 154px;
+    height: 132px;
     margin-bottom: 12px;
     border-radius: 16px;
     display: grid;
@@ -1406,7 +1593,7 @@ const styles = `
     position: absolute;
     left: 43px;
     right: 43px;
-    bottom: 74px;
+    bottom: 86px;
     height: 52px;
     border-radius: 999px;
     display: flex;
@@ -1421,7 +1608,7 @@ const styles = `
   }
 
   .consumerHeader {
-    padding: 16px 20px 0;
+    padding: 14px 22px 0;
     display: flex;
     justify-content: space-between;
     gap: 14px;
@@ -1429,13 +1616,14 @@ const styles = `
   }
 
   .consumerHeader h1 {
-    font-size: 30px;
+    font-size: 31px;
+    word-break: keep-all;
   }
 
   .problemPromptMini {
-    margin: 18px 16px 0;
-    padding: 14px;
-    border-radius: 20px;
+    margin: 16px 16px 0;
+    padding: 22px;
+    border-radius: 28px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1446,7 +1634,7 @@ const styles = `
 
   .problemPromptMini span {
     flex: 1;
-    font-size: 13px;
+    font-size: 13.5px;
   }
 
   .problemPromptMini b {
@@ -1457,8 +1645,52 @@ const styles = `
     font-size: 12px;
   }
 
+  .storyRail {
+    margin: 20px 16px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .storyItem {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .storyRing {
+    width: 60px;
+    height: 60px;
+    padding: 2.5px;
+    border-radius: 50%;
+  }
+
+  .storyRing span {
+    width: 100%;
+    height: 100%;
+    border: 2.5px solid #fff;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-weight: 650;
+    font-size: 22px;
+  }
+
+  .storyItem small {
+    max-width: 64px;
+    overflow: hidden;
+    color: var(--sv-ink-soft);
+    font-size: 10.5px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .sectionTitle {
-    margin: 22px 20px 10px;
+    margin: 20px 22px 10px;
   }
 
   .sectionTitle h2 {
@@ -1468,11 +1700,11 @@ const styles = `
   .recommendGrid {
     display: flex;
     gap: 10px;
-    padding-left: 20px;
+    padding-left: 16px;
   }
 
   .smallServiceCard {
-    width: 116px;
+    width: 118px;
     padding: 10px;
     border-radius: 20px;
     background: white;
@@ -1537,7 +1769,8 @@ const styles = `
   }
 
   .needHeader h1 {
-    font-size: 34px;
+    font-size: 32px;
+    word-break: keep-all;
   }
 
   .bigSearchPanel {
@@ -1656,14 +1889,13 @@ const styles = `
   }
 
   .matchTop span {
-    padding: 3px 6px;
+    padding: 3px 7px;
     border-radius: 999px;
     background: var(--sv-coral);
     color: white;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 8.5px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: -0.1px;
     white-space: nowrap;
   }
 
@@ -1701,15 +1933,16 @@ const styles = `
     place-items: center;
     align-content: center;
     text-align: center;
+    gap: 0;
   }
 
   .closingScene h1 {
     margin: 0;
-    font-family: var(--font-serif, Georgia, serif);
+    font-family: var(--font-sans, -apple-system, system-ui, sans-serif);
     font-size: 58px;
     line-height: 1;
-    font-weight: 400;
-    letter-spacing: -0.5px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
   }
 
   .closingScene p {
@@ -1719,16 +1952,6 @@ const styles = `
     line-height: 1.45;
     font-weight: 600;
     letter-spacing: -0.1px;
-  }
-
-  .closingChip {
-    margin-top: 20px;
-    padding: 8px 13px;
-    border-radius: 999px;
-    background: var(--sv-ink);
-    color: white;
-    font-size: 12px;
-    font-weight: 700;
   }
 
   @keyframes pulseBar {

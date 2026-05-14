@@ -654,7 +654,7 @@ AI·웹 서비스를 포장하고, 필요한 사용자에게 배달합니다.
 
 # 실제 녹화용 TTS 섹션 기록
 
-아래는 `recordings/short-video/appdrop-short-video-calm-sections-tts.mp4` 생성에 사용한 실제 섹션별 TTS 대본과 타임라인입니다.
+아래는 `recordings/short-video/appnari-short-video-calm-sections-tts.mp4` 생성에 사용한 실제 섹션별 TTS 대본과 타임라인입니다.
 
 ## TTS 생성 조건
 
@@ -670,12 +670,12 @@ AI·웹 서비스를 포장하고, 필요한 사용자에게 배달합니다.
 | --- | --- | ---: | --- |
 | `00-opening.wav` | `opening` | 5.40초 | 요즘은 AI 덕분에 누구나 앱과 웹서비스를 만들 수 있습니다. |
 | `01-problem.wav` | `problem` | 4.52초 | 하지만 만든 서비스를 알리는 일은 여전히 어렵습니다. |
-| `02-submit.wav` | `submit` | 7.08초 | AppDrop은 창업자와 작은 팀이 만든 서비스를 AI가 자동으로 포장해주는 플랫폼입니다. |
+| `02-submit.wav` | `submit` | 7.08초 | 앱나리는 창업자와 작은 팀이 만든 서비스를 AI가 자동으로 포장해주는 플랫폼입니다. |
 | `03-package.wav` | `package` → `assets` | 8.64초 | 서비스 링크만 입력하면 소개 문구, 태그, 앱 카드, 랜딩 이미지, 숏폼 홍보물이 생성됩니다. |
 | `04-home.wav` | `home` | 3.00초 | 소비자는 앱 이름을 몰라도 됩니다. |
 | `05-need.wav` | `need` | 2.28초 | 자신의 문제만 입력하면, |
-| `06-match.wav` | `match` | 3.96초 | AppDrop이 필요한 서비스를 배달하듯 추천합니다. |
-| `07-growth.wav` | `closing` | 7.96초 | AppDrop은 새로 출발하는 AI·웹 서비스가 더 쉽게 발견되고 성장하도록 돕습니다. |
+| `06-match.wav` | `match` | 3.96초 | 앱나리가 필요한 서비스를 배달하듯 추천합니다. |
+| `07-growth.wav` | `closing` | 7.96초 | 앱나리는 새로 출발하는 AI·웹 서비스가 더 쉽게 발견되고 성장하도록 돕습니다. |
 
 ## 실제 화면 타임라인
 
@@ -698,4 +698,4 @@ AI·웹 서비스를 포장하고, 필요한 사용자에게 배달합니다.
 
 - 섹션별 WAV: `recordings/short-video/audio/calm-sections/`
 - 이어붙인 WAV: `recordings/short-video/audio/appdrop-narration-calm-sections.wav`
-- 최종 MP4: `recordings/short-video/appdrop-short-video-calm-sections-tts.mp4`
+- 최종 MP4: `recordings/short-video/appnari-short-video-calm-sections-tts.mp4`

@@ -1,7 +1,7 @@
 {
-  "voiceName": "Orus",
+  "voiceName": "Kore",
   "sampleRate": 24000,
-  "promptProfile": "consistent same-speaker segmented narration with tail pauses",
+  "promptProfile": "consistent same-speaker female segmented narration with tail pauses",
   "sections": [
     {
       "file": "00-opening.wav",
