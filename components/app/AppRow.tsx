@@ -17,13 +17,21 @@ export default function AppRow({ app }: { app: App }) {
         <p className="font-bold text-gray-900 text-sm truncate">{a.title}</p>
         <p className="text-[10px] text-gray-400 truncate">{a.tagline}</p>
       </div>
-      <Link
-        href={a.link}
-        target="_blank"
-        className="bg-brand text-white rounded-lg px-3 py-1.5 text-xs font-bold flex-shrink-0"
-      >
-        {t('app.try')}
-      </Link>
+      <div className="flex gap-1.5 flex-shrink-0">
+        <Link
+          href={`/reel/${app.id}`}
+          className="bg-gray-100 text-gray-700 rounded-lg px-2.5 py-1.5 text-xs font-semibold"
+        >
+          {t('reel.watch')}
+        </Link>
+        <Link
+          href={a.link}
+          target="_blank"
+          className="bg-brand text-white rounded-lg px-3 py-1.5 text-xs font-bold"
+        >
+          {t('app.try')}
+        </Link>
+      </div>
     </div>
   )
 }
