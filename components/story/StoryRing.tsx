@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { App } from '@/lib/types'
-import { gradientMap } from '@/lib/types'
+import { creators } from '@/lib/mock-data/creators'
 
 interface StoryRingProps {
   app: App
@@ -8,17 +8,34 @@ interface StoryRingProps {
 }
 
 export default function StoryRing({ app, seen = false }: StoryRingProps) {
-  const gradient = gradientMap[app.storyCard.gradientTheme]
+  const creator = creators.find(c => c.id === app.creatorId)
+  const accent = app.accent ?? '#FF5A2C'
+  const tint = creator?.tint ?? accent
+
+  const ring = seen
+    ? 'var(--line-2)'
+    : `conic-gradient(from 220deg, ${accent}, ${tint}, ${accent})`
+
   return (
-    <Link href={`/reel/${app.id}`} className="flex flex-col items-center gap-1 flex-shrink-0">
-      <div className={`w-14 h-14 rounded-full p-0.5 ${seen ? 'bg-gray-300' : `bg-gradient-to-br ${gradient}`}`}>
-        <div className="w-full h-full rounded-full bg-white p-0.5">
-          <div className={`w-full h-full rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center text-xl`}>
-            {app.title[0]}
+    <Link href={`/reel/${app.id}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, minWidth: 64, textDecoration: 'none' }}>
+      <div style={{
+        width: 60, height: 60, borderRadius: '50%', padding: 2.5,
+        background: ring,
+      }}>
+        <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: '#fff', padding: 2.5 }}>
+          <div style={{
+            width: '100%', height: '100%', borderRadius: '50%',
+            background: tint, color: '#fff',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontWeight: 600, fontSize: 22,
+          }}>
+            {creator?.avatar ?? app.title[0]}
           </div>
         </div>
       </div>
-      <span className="text-[9px] font-semibold text-gray-700 w-14 text-center truncate">{app.title}</span>
+      <span style={{ fontSize: 10.5, color: 'var(--ink-soft)', fontWeight: 500, maxWidth: 70, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {creator?.name.split(' ')[0] ?? app.title}
+      </span>
     </Link>
   )
 }

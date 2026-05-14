@@ -11,7 +11,7 @@ const favoriteCreators = creators.slice(0, 2)
 export default function ProfilePage() {
   const { t } = useLocale()
   return (
-    <div className="pb-20 bg-gray-50 min-h-screen">
+    <div className="pb-20 min-h-screen" style={{ background: 'var(--cream)' }}>
       <div className="bg-white px-4 pt-3 pb-3 border-b border-gray-100">
         <p className="font-extrabold text-gray-900 text-base">{t('profile.title')}</p>
       </div>

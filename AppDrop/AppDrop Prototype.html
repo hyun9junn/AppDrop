@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AppDrop — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream:    #F7F3EC;
+    --cream-2:  #EFE9DF;
+    --surface:  #FFFFFF;
+    --ink:      #1A1815;
+    --ink-soft: #6E665C;
+    --ink-faint:#A8A097;
+    --line:     #E8E2D7;
+    --line-2:   #DBD3C4;
+    --coral:    #FF5A2C;
+    --coral-ink:#C7390F;
+    --mint:     #1F5F4B;
+    --butter:   #F6D89A;
+    --sky:      #BFD9F0;
+    --shadow-card: 0 1px 0 rgba(24,20,12,0.04), 0 8px 24px -10px rgba(24,20,12,0.10);
+    --shadow-pop:  0 4px 14px rgba(24,20,12,0.07), 0 30px 60px -20px rgba(24,20,12,0.25);
+    --serif: 'Instrument Serif', 'Times New Roman', serif;
+    --sans:  'Geist', -apple-system, system-ui, sans-serif;
+    --mono:  'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: var(--sans);
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 800px at 20% -10%, #F1E7D6 0%, transparent 60%),
+      radial-gradient(1000px 700px at 110% 20%, #E8E0F0 0%, transparent 55%),
+      #F2ECE0;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+  #root { width: 100%; height: 100%; display: grid; place-items: center; }
+  button { font-family: inherit; cursor: pointer; border: 0; background: none; padding: 0; color: inherit; }
+  /* simple webkit scrollbar hide for scrolling regions in the phone */
+  .noscrollbar::-webkit-scrollbar { display: none; }
+  .noscrollbar { scrollbar-width: none; }
+  /* tiny screen-transition */
+  @keyframes screenIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .screen-in { opacity: 1; animation: screenIn .28s cubic-bezier(.2,.7,.2,1) forwards; }
+  /* shimmer for waveform & speedrun */
+  @keyframes pulseBar { 0%,100% { transform: scaleY(.4); } 50% { transform: scaleY(1); } }
+  @keyframes float    { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes drift    { from { opacity: 0; transform: translate(var(--fx, 30px), var(--fy, 0)) rotate(var(--r, 0deg)); } to { opacity: 1; transform: translate(0,0) rotate(var(--r, 0deg)); } }
+  @keyframes typeIn   { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes countDown{ from { stroke-dashoffset: 0; } to { stroke-dashoffset: 282; } }
+  .anim-fadeUp { animation: fadeUp .35s ease-out forwards; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="screens-discover.jsx"></script>
+<script type="text/babel" src="screens-search.jsx"></script>
+<script type="text/babel" src="screens-detail.jsx"></script>
+<script type="text/babel" src="screens-reels.jsx"></script>
+<script type="text/babel" src="screens-submit.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

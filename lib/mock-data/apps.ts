@@ -30,6 +30,8 @@ export const apps: App[] = [
     },
     boostCount: 243,
     isNew: true,
+    reelStyle: 'paper' as const,
+    accent: '#FF5A2C',
   },
   {
     id: 'pixeldrop',
@@ -60,6 +62,8 @@ export const apps: App[] = [
     },
     boostCount: 512,
     isNew: false,
+    reelStyle: 'explosion' as const,
+    accent: '#1F5F4B',
   },
   {
     id: 'voicenote-pro',
@@ -90,6 +94,8 @@ export const apps: App[] = [
     },
     boostCount: 187,
     isNew: true,
+    reelStyle: 'waveform' as const,
+    accent: '#3B7A57',
   },
   {
     id: 'blogai',
@@ -120,6 +126,8 @@ export const apps: App[] = [
     },
     boostCount: 318,
     isNew: false,
+    reelStyle: 'stickies' as const,
+    accent: '#C77E1A',
   },
   {
     id: 'launchkit',
@@ -150,5 +158,7 @@ export const apps: App[] = [
     },
     boostCount: 401,
     isNew: false,
+    reelStyle: 'speedrun' as const,
+    accent: '#1A1815',
   },
 ]

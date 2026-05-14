@@ -307,7 +307,7 @@ const LocaleContext = createContext<LocaleContextValue>({
 })
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>('en')
+  const [locale, setLocaleState] = useState<Locale>('ko')
 
   useEffect(() => {
     const stored = localStorage.getItem('locale') as Locale | null

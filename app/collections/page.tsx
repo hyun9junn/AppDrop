@@ -15,8 +15,8 @@ export default function CollectionsPage() {
   }, [])
 
   return (
-    <div className="pb-20 bg-gray-50 min-h-screen">
-      <div className="bg-white px-4 pt-3 pb-3 border-b border-gray-100">
+    <div className="pb-20 min-h-screen" style={{ background: 'var(--cream)' }}>
+      <div className="bg-white px-4 pt-3 pb-3 border-b" style={{ borderColor: 'var(--line)' }}>
         <p className="font-extrabold text-gray-900 text-base">{t('collections.title')}</p>
         <p className="text-xs text-gray-400">{t('collections.subtitle')}</p>
       </div>

@@ -6,9 +6,9 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          DEFAULT: '#6366f1',
-          dark: '#4f46e5',
-          light: '#8b5cf6',
+          DEFAULT: '#FF5A2C',
+          dark: '#C7390F',
+          light: '#FF8A65',
         },
       },
       borderRadius: {

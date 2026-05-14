@@ -6,6 +6,8 @@ export type AccessType = 'web' | 'api' | 'download' | 'extension'
 export type Pricing = 'free' | 'freemium' | 'paid'
 export type FeedItemType = 'drop' | 'beta' | 'announcement' | 'update'
 
+export type ReelStyle = 'paper' | 'explosion' | 'waveform' | 'stickies' | 'speedrun'
+
 export type GradientTheme =
   | 'indigo-purple' | 'sky-indigo' | 'emerald-sky'
   | 'amber-red' | 'blue-teal' | 'orange-amber'
@@ -47,6 +49,8 @@ export interface App {
   boostCount: number
   isNew: boolean
   reelVideoUrl?: string
+  reelStyle?: ReelStyle
+  accent?: string
 }
 
 export interface Creator {
@@ -54,6 +58,7 @@ export interface Creator {
   name: string
   bio: string
   avatar: string
+  tint?: string
   links: string[]
   appIds: string[]
   regularCount: number

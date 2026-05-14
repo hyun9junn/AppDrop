@@ -15,34 +15,37 @@ const categories: { key: string; icon: string; slug: Category }[] = [
 ]
 
 const bgMap: Record<Category, string> = {
-  writing: 'bg-indigo-50',
-  images: 'bg-red-50',
-  audio: 'bg-green-50',
-  video: 'bg-yellow-50',
-  data: 'bg-blue-50',
-  business: 'bg-orange-50',
-  design: 'bg-purple-50',
-  'ai-tools': 'bg-teal-50',
+  writing:   '#FFE9DF',
+  images:    '#E2EFE8',
+  audio:     '#FBE5C8',
+  video:     '#E6DFF7',
+  data:      '#DCEAF6',
+  business:  '#F4E0E0',
+  design:    '#EFE6DA',
+  'ai-tools':'#E5E5E5',
 }
 
 export default function CategoryGrid() {
   const { t } = useLocale()
   return (
-    <div className="bg-white rounded-2xl mx-4 mt-3 p-3">
-      <div className="grid grid-cols-4 gap-2">
-        {categories.map(cat => (
-          <Link
-            key={cat.slug}
-            href={`/category/${cat.slug}`}
-            className="flex flex-col items-center gap-1"
+    <div className="grid grid-cols-4 gap-2.5">
+      {categories.map(cat => (
+        <Link
+          key={cat.slug}
+          href={`/category/${cat.slug}`}
+          className="flex flex-col items-center gap-1.5"
+        >
+          <div
+            className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl"
+            style={{ background: bgMap[cat.slug] }}
           >
-            <div className={`w-10 h-10 ${bgMap[cat.slug]} rounded-xl flex items-center justify-center text-xl`}>
-              {cat.icon}
-            </div>
-            <span className="text-[9px] font-semibold text-gray-600">{t(cat.key as any)}</span>
-          </Link>
-        ))}
-      </div>
+            {cat.icon}
+          </div>
+          <span className="text-[10px] font-semibold text-center leading-tight" style={{ color: '#1A1815' }}>
+            {t(cat.key as any)}
+          </span>
+        </Link>
+      ))}
     </div>
   )
 }
