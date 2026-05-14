@@ -12,22 +12,29 @@ jest.mock('@/lib/i18n', () => ({
     t: (key: string) => ({
       'nav.discover': 'Discover',
       'nav.collections': 'Collections',
+      'nav.reels': 'Reels',
       'nav.feed': 'My Feed',
       'nav.profile': 'Profile',
     }[key] ?? key),
   }),
 }))
 
-test('renders all four tabs', () => {
+test('renders all five tabs', () => {
   render(<BottomTabBar />)
   expect(screen.getByText('Discover')).toBeInTheDocument()
   expect(screen.getByText('Collections')).toBeInTheDocument()
+  expect(screen.getByText('Reels')).toBeInTheDocument()
   expect(screen.getByText('My Feed')).toBeInTheDocument()
   expect(screen.getByText('Profile')).toBeInTheDocument()
 })
 
 test('highlights Discover tab when on home route', () => {
   render(<BottomTabBar />)
-  const discoverLabel = screen.getByText('Discover')
-  expect(discoverLabel).toHaveClass('text-brand')
+  expect(screen.getByText('Discover')).toHaveClass('text-brand')
+})
+
+test('Reels tab links to /reels', () => {
+  render(<BottomTabBar />)
+  const reelsLink = screen.getByText('Reels').closest('a')
+  expect(reelsLink).toHaveAttribute('href', '/reels')
 })

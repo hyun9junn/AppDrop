@@ -10,6 +10,7 @@ export default function BottomTabBar() {
   const tabs = [
     { key: 'nav.discover', icon: '🏠', href: '/' },
     { key: 'nav.collections', icon: '📦', href: '/collections' },
+    { key: 'nav.reels', icon: '▶', href: '/reels' },
     { key: 'nav.feed', icon: '📬', href: '/feed' },
     { key: 'nav.profile', icon: '👤', href: '/profile' },
   ] as const
@@ -17,7 +18,7 @@ export default function BottomTabBar() {
   return (
     <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-gray-100 flex justify-around py-2 z-20">
       {tabs.map(tab => {
-        const active = pathname === tab.href
+        const active = pathname === tab.href || (tab.href === '/reels' && pathname.startsWith('/reel'))
         return (
           <Link key={tab.href} href={tab.href} className="flex flex-col items-center gap-0.5 py-1 px-3">
             <span className="text-lg">{tab.icon}</span>
